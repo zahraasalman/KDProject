@@ -42,26 +42,39 @@ def options():  # lets user ppipreqs /home/project/locationick the country/regio
         option_continent = st.selectbox(
             'Which continents?',
             Q.get_continents())
-        return_list.append(option_continent)
-        continent = option_continent
+
+        if option_continent:
+            return_list.append(option_continent)
+            continent = option_continent
+        else:
+            "No results found, please try another option!"
 
     if st.checkbox("Filter by Region"):
         option_region = st.selectbox(
-            'Which continents?',
+            'Which Region?',
             Q.get_regions(continent))
-        return_list.append(option_region)
-        region = option_region
+
+        if option_region:
+            return_list.append(option_region)
+            region = option_region
+        else:
+            "No results found, please try another option!"
 
     option_country = st.selectbox(
         'Which country?',
         Q.get_countries(continent, region))
     return_list.append(option_country)
     country = option_country
+
     if st.checkbox("Select Capital"):
         option_capital = st.selectbox(
             'Which capital?',
             Q.get_capitals(country))
-        return_list.append(option_capital)
+
+        if option_capital:
+            return_list.append(option_capital)
+        else:
+            "No results found, please try another option!"
 
     return return_list
 
@@ -98,4 +111,4 @@ with col2:
     folium_static(map.m)
 
 if st.button('Find Places'):
-    "I want to die"
+    pass  ## redirect to page blabla

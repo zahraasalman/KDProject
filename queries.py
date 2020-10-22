@@ -114,7 +114,7 @@ def get_countries(continent='all', region='all'):
 
 
 def get_capitals(country):
-    result_list = [' ']
+    result_list = []
     country = country.replace(" ", "%20")
 
     sparql.setQuery("""

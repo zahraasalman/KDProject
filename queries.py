@@ -23,8 +23,6 @@ def get_continents():
         result = result.replace("%20", " ")
         result_list.append(result)
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 
@@ -42,7 +40,7 @@ def get_regions(continent='all'):
                          :fromRegion ?region.        
             }GROUP BY (?region)
             """)
-    else: # continent is selected
+    else:  # continent is selected
         sparql.setQuery("""
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                 PREFIX : <http://www.tourism.org/group6/>
@@ -54,14 +52,11 @@ def get_regions(continent='all'):
                 """ % continent)
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
-
     for result in results["results"]["bindings"]:
         result = result["region"]["value"].split('/')[-1]
         result = result.replace("%20", " ")
         result_list.append(result)
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 
@@ -115,8 +110,6 @@ def get_countries(continent='all', region='all'):
         result = result.replace("%20", " ")
         result_list.append(result)
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 
@@ -141,8 +134,6 @@ def get_capitals(country):
         result = result.replace("%20", " ")
         result_list.append(result)
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 
@@ -167,10 +158,7 @@ def get_country_coordinates(country):
         result = result.replace("%20", " ")
         result_list.append(result)
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
-
 
 ###################### TESTING THE FUNCTIONS ##############################
 # print(get_continents())

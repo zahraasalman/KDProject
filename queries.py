@@ -3,7 +3,7 @@ import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-sparql = SPARQLWrapper("http://192.168.1.110:7200/repositories/FinalProject")
+sparql = SPARQLWrapper("https://kd-project.vercel.app/statements.rj")
 
 
 def get_continents():
@@ -176,4 +176,4 @@ def get_country_coordinates(country):
 # print(get_continents())
 # print(get_countries(region="Southern%20Europe"))
 # print(get_regions("Europe"))
-print(get_capitals("Netherlands"))
+# print(get_capitals("Netherlands"))

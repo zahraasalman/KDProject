@@ -146,6 +146,32 @@ def get_capitals(country):
     return result_list
 
 
+def get_country_coordinates(country):
+    result_list = []
+    country = country.replace(" ", "%20")
+
+    sparql.setQuery("""
+                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX : <http://www.tourism.org/group6/>
+                    select * where { 
+                            :%s :hasLatitude ?lat;
+                                :hasLongitude ?long.
+                    } 
+                    """ % country)
+
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    for result in results["results"]["bindings"]:
+        result = result["capital"]["value"].split('/')[-1]
+        result = result.replace("%20", " ")
+        result_list.append(result)
+
+    if result_list == []:
+        result_list = "No results found, please try another option!"
+    return result_list
+
+
 ###################### TESTING THE FUNCTIONS ##############################
 # print(get_continents())
 # print(get_countries(region="Southern%20Europe"))

@@ -32,7 +32,7 @@ def _max_width_():  # CSS to make screen in wide mode
     )
 
 
-def options():  # lets user pick the country/region/continent/capital
+def options():  # lets user ppipreqs /home/project/locationick the country/region/continent/capital
     return_list = []
     continent = 'all'
     region = 'all'

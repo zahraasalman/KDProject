@@ -3,12 +3,15 @@ import pandas as pd
 import numpy as np
 from streamlit_folium import folium_static
 
+import folium as f
+from streamlit_folium import folium_static
+
 import map
 import queries as Q
 
 
 ############################### FUNCTIONS ######################################
-def _max_width_():  # CSS to make screen in wide mode
+def max_width():  # CSS to make screen in wide mode
     max_width_str = f"max-width: 2000px;"
     st.markdown(
         f"""
@@ -55,6 +58,7 @@ def options():
         Q.get_countries(continent, region))
     return_list["country"] = option_country
     country = option_country
+    options.country = country
     if st.checkbox("Select Capital"):
         option_capital = st.selectbox(
             'Which capital?',
@@ -68,7 +72,7 @@ def options():
 
 
 ############################### INTRODUCTION ####################################
-_max_width_()
+max_width()
 st.title("Welcome to <app name>")
 """
 This app is made to help you get your information before you travel to your touisty destination blah blah idc. \n
@@ -85,8 +89,14 @@ with col1:
     for key, value in results_from_funoptions.items():
         "You selected " + key + ": " + value
 
-with col2:
-    folium_static(map.m)
+# I have decided to place the col2 in the button fucntion, the map will now appear as the user gives input.
+# Abandoned map.py as this required input from index.py which would cause an import circle and crash the program.
 
 if st.button('Find Places'):
-    "I want to die"
+    cords = Q.get_country_coordinates(options.country)[1]
+    print(cords)
+    # print(Q.get_country_coordinates(options.country))
+    map2 = f.Map(location=[cords[0], cords[1]])
+
+    with col2:
+         folium_static(map2)

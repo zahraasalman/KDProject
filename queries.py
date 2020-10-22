@@ -4,10 +4,8 @@ from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 
-# sparql = SPARQLWrapper("https://kd-project.vercel.app/ontologyWithData.ttl")
-# sparql = SPARQLWrapper("https://kd-project.vercel.app/statements.rj")
-# sparql = SPARQLWrapper("https://projectkd-a951ufu8j.vercel.app/graph.json")
-sparql = SPARQLWrapper("http://192.168.1.110:7200/repositories/FinalProject")
+# sparql = SPARQLWrapper("https://kdp-roject-zahraasalman.projectkd.vercel.app/")
+sparql = SPARQLWrapper("http://192.168.178.122:7200/repositories/TestKD2")
 
 
 def get_continents():
@@ -151,6 +149,8 @@ def get_capitals(country):  # could be changed to get cities
 
 
 def get_country_coordinates(country):
+    # The cordinates are fucked, probably a faulty css or an import error from GraphDB
+    # Mexico is the only working version, the rest is borked, wil investigate tomorrow. (23 okt)
     result_list = []
     country = country.replace(" ", "%20")
 
@@ -181,4 +181,4 @@ def get_country_coordinates(country):
 # print(get_countries(region="Southern%20Europe"))
 # print(get_regions("Europe"))
 # print(get_capitals("Netherlands"))
-print(get_country_coordinates("Mexico"))
+# print(get_country_coordinates("Mexico"))

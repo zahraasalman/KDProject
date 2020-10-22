@@ -33,7 +33,7 @@ def _max_width_():  # CSS to make screen in wide mode
 
 
 def options():  # lets user ppipreqs /home/project/locationick the country/region/continent/capital
-    return_list = []
+    return_list = {}  # dictionary
     continent = 'all'
     region = 'all'
     country = 'all'
@@ -44,7 +44,7 @@ def options():  # lets user ppipreqs /home/project/locationick the country/regio
             Q.get_continents())
 
         if option_continent:
-            return_list.append(option_continent)
+            return_list['continent'] = option_continent
             continent = option_continent
         else:
             "No results found, please try another option!"
@@ -55,7 +55,7 @@ def options():  # lets user ppipreqs /home/project/locationick the country/regio
             Q.get_regions(continent))
 
         if option_region:
-            return_list.append(option_region)
+            return_list["region"] = option_region
             region = option_region
         else:
             "No results found, please try another option!"
@@ -63,7 +63,7 @@ def options():  # lets user ppipreqs /home/project/locationick the country/regio
     option_country = st.selectbox(
         'Which country?',
         Q.get_countries(continent, region))
-    return_list.append(option_country)
+    return_list["country"] = option_country
     country = option_country
 
     if st.checkbox("Select Capital"):
@@ -72,7 +72,7 @@ def options():  # lets user ppipreqs /home/project/locationick the country/regio
             Q.get_capitals(country))
 
         if option_capital:
-            return_list.append(option_capital)
+            return_list["capital"] = option_capital
         else:
             "No results found, please try another option!"
 
@@ -93,19 +93,9 @@ st.subheader("Please select the country or city you want to view")
 col1, col2 = st.beta_columns([2, 3])
 
 with col1:
-    datatypes = ['Continent', 'Region', 'Country', 'Capital']
     results_from_funoptions = options()
-    j = 0
-    for i in results_from_funoptions:
-        if i == 'Choose an option':  # to ignore if nothing's selected
-            i = ''
-
-        if type(i) is list:  # there's a multi-select
-            for x in i:
-                "You selected", datatypes[j], ": ", x
-        elif i != '':
-            "You selected", datatypes[j], ": ", i
-        j += 1
+    for key, value in results_from_funoptions.items():
+        "You selected " + key + ": " + value
 
 with col2:
     folium_static(map.m)

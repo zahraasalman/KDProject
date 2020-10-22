@@ -3,7 +3,11 @@ import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-sparql = SPARQLWrapper("https://kd-project.vercel.app/statements.rj")
+
+# sparql = SPARQLWrapper("https://kd-project.vercel.app/ontologyWithData.ttl")
+# sparql = SPARQLWrapper("https://kd-project.vercel.app/statements.rj")
+# sparql = SPARQLWrapper("https://projectkd-a951ufu8j.vercel.app/graph.json")
+sparql = SPARQLWrapper("http://192.168.1.110:7200/repositories/FinalProject")
 
 
 def get_continents():
@@ -120,8 +124,8 @@ def get_countries(continent='all', region='all'):
     return result_list
 
 
-def get_capitals(country):
-    result_list = [' ']
+def get_capitals(country):  # could be changed to get cities
+    result_list = []
     country = country.replace(" ", "%20")
 
     sparql.setQuery("""
@@ -161,11 +165,11 @@ def get_country_coordinates(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
-
     for result in results["results"]["bindings"]:
-        result = result["capital"]["value"].split('/')[-1]
-        result = result.replace("%20", " ")
-        result_list.append(result)
+        result1 = float(result["lat"]["value"])
+        result2 = float(result["long"]["value"])
+        if [result1, result2] not in result_list:
+            result_list.append([result1, result2])
 
     if result_list == []:
         result_list = "No results found, please try another option!"
@@ -177,3 +181,4 @@ def get_country_coordinates(country):
 # print(get_countries(region="Southern%20Europe"))
 # print(get_regions("Europe"))
 # print(get_capitals("Netherlands"))
+print(get_country_coordinates("Mexico"))

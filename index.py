@@ -36,8 +36,6 @@ def options():
         if option_continent:
             return_list['continent'] = option_continent
             continent = option_continent
-        else:
-            "No results found, please select a continent or unselect the checkbox!"
 
     if st.checkbox("Filter by Region"):
         option_region = st.selectbox(
@@ -47,22 +45,19 @@ def options():
         if option_region:
             return_list['continent'] = option_region
             region = option_region
-        else:
-            "No results found, please select a region or unselect the checkbox!"
 
     option_country = st.selectbox(
         'Which country?',
         Q.get_countries(continent, region))
     return_list["country"] = option_country
     country = option_country
+
     if st.checkbox("Select Capital"):
         option_capital = st.selectbox(
             'Which capital?',
             Q.get_capitals(country))
         if option_capital:
             return_list["capital"] = option_capital
-        else:
-            "No results found, please select a capital or unselect the checkbox!"
 
     return return_list
 

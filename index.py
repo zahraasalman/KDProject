@@ -3,7 +3,7 @@ import pandas as pd
 import numpy as np
 from streamlit_folium import folium_static
 
-import map
+import map as M
 import queries as Q
 
 
@@ -23,7 +23,7 @@ def _max_width_():  # CSS to make screen in wide mode
 
 
 def options():
-    return_list = {} #dictionary
+    return_list = {}  # dictionary
     continent = 'all'
     region = 'all'
     country = 'all'
@@ -75,13 +75,18 @@ st.subheader("Please select the country or capital that you want to view")
 """
 col1, col2 = st.beta_columns([2, 3])
 
+selectedOptions = []
+
 with col1:
-    results_from_funoptions = options()
-    for key, value in results_from_funoptions.items():
+    selectedOptions = options()
+    for key, value in selectedOptions.items():
         "You selected " + key + ": " + value
 
 with col2:
-    folium_static(map.m)
+    coordinates = Q.get_country_coordinates(selectedOptions['country'])
+    # coordinates = Q.get_country_coordinates('Mexico')
+    # coordinates = [(39.1625, -76.205), (39.1625, -91.8711), (43.4549, -76.205), (43.4549, -91.8711)]
+    M.getMap(coordinates)
 
 if st.button('Find Places'):
-    "I want to die"
+    pass

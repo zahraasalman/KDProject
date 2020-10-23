@@ -3,11 +3,10 @@ import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-
 # sparql = SPARQLWrapper("https://kd-project.vercel.app/ontologyWithData.ttl")
 # sparql = SPARQLWrapper("https://kd-project.vercel.app/statements.rj")
 # sparql = SPARQLWrapper("https://projectkd-a951ufu8j.vercel.app/graph.json")
-sparql = SPARQLWrapper("http://192.168.1.110:7200/repositories/FinalProject")
+sparql = SPARQLWrapper("http://192.168.0.102:7201/repositories/milestone2")
 
 
 def get_continents():
@@ -44,7 +43,7 @@ def get_regions(continent='all'):
                          :fromRegion ?region.        
             }GROUP BY (?region)
             """)
-    else: # continent is selected
+    else:  # continent is selected
         sparql.setQuery("""
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                 PREFIX : <http://www.tourism.org/group6/>
@@ -148,7 +147,7 @@ def get_country_coordinates(country):
     sparql.setQuery("""
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     PREFIX : <http://www.tourism.org/group6/>
-                    select * where { 
+                    select ?lat ?long where { 
                             :%s :hasLatitude ?lat;
                                 :hasLongitude ?long.
                     } 
@@ -156,17 +155,21 @@ def get_country_coordinates(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
+    print(results)
+
     for result in results["results"]["bindings"]:
         result1 = float(result["lat"]["value"])
         result2 = float(result["long"]["value"])
-        if [result1, result2] not in result_list:
-            result_list.append([result1, result2])
-    return result_list
+        result_list.append((result1, result2))
 
+    return result_list
 
 ###################### TESTING THE FUNCTIONS ##############################
 # print(get_continents())
-# print(get_countries(region="Southern%20Europe"))
+# # print(get_countries(region="Southern%20Europe"))
 # print(get_regions("Europe"))
 # print(get_capitals("Netherlands"))
-print(get_country_coordinates("Mexico"))
+# print("LALA")
+# print(get_country_coordinates("Mexico"))
+# get_country_coordinates("Mexico")

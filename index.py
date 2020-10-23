@@ -55,6 +55,7 @@ def options():
         Q.get_countries(continent, region))
     return_list["country"] = option_country
     country = option_country
+
     if st.checkbox("Select Capital"):
         option_capital = st.selectbox(
             'Which capital?',
@@ -74,13 +75,14 @@ st.title("Welcome to <app name>")
 This app is made to help you get your information before you travel to your touisty destination blah blah idc. \n
 This is multi-line and it's awesome
 """
-st.subheader("Please select the country or capital that you want to view")
-"""
 
-"""
 col1, col2 = st.beta_columns([2, 3])
 
 with col1:
+    st.subheader("Please select the country or capital that you want to view")
+    """
+
+    """
     results_from_funoptions = options()
     for key, value in results_from_funoptions.items():
         "You selected " + key + ": " + value

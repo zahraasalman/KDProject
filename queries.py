@@ -4,9 +4,7 @@ from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
 
-# sparql = SPARQLWrapper("https://kd-project.vercel.app/ontologyWithData.ttl")
-# sparql = SPARQLWrapper("https://kd-project.vercel.app/statements.rj")
-# sparql = SPARQLWrapper("https://projectkd-a951ufu8j.vercel.app/graph.json")
+# sparql = SPARQLWrapper("https://kdp-roject-zahraasalman.projectkd.vercel.app/")
 sparql = SPARQLWrapper("http://192.168.1.110:7200/repositories/FinalProject")
 
 

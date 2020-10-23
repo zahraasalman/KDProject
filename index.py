@@ -2,12 +2,14 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from streamlit_folium import folium_static
+import re
 
 import folium as f
 from streamlit_folium import folium_static
 
-import map
+import map as M
 import queries as Q
+
 
 
 ############################### FUNCTIONS ######################################
@@ -26,6 +28,7 @@ def max_width():  # CSS to make screen in wide mode
 
 
 def options():
+    options.filter_by_capital = False
     return_list = {} #dictionary
     continent = 'all'
     region = 'all'
@@ -60,15 +63,28 @@ def options():
     country = option_country
     options.country = country
     if st.checkbox("Select Capital"):
+        options.filter_by_capital = True
         option_capital = st.selectbox(
             'Which capital?',
             Q.get_capitals(country))
         if option_capital:
             return_list["capital"] = option_capital
+            options.capital = option_capital
         else:
             "No results found, please select a capital or unselect the checkbox!"
 
     return return_list
+
+def getMap(coordinates):  ### touples array! [(float, float), (float, float)]
+    if not coordinates:  ## if no coordinates, show general map
+        return folium_static(f.Map())
+
+    mapIt = f.Map()
+    for coord in coordinates:
+        mapIt = f.Map(location=[coord[0], coord[1]], zoom_start=4)
+        f.Marker([coord[0], coord[1]]).add_to(mapIt)
+
+    return folium_static(mapIt)
 
 
 ############################### INTRODUCTION ####################################
@@ -89,14 +105,23 @@ with col1:
     for key, value in results_from_funoptions.items():
         "You selected " + key + ": " + value
 
+
 # I have decided to place the col2 in the button fucntion, the map will now appear as the user gives input.
 # Abandoned map.py as this required input from index.py which would cause an import circle and crash the program.
 
 if st.button('Find Places'):
-    cords = Q.get_country_coordinates(options.country)[1]
-    print(cords)
-    # print(Q.get_country_coordinates(options.country))
-    map2 = f.Map(location=[cords[0], cords[1]])
-
-    with col2:
-         folium_static(map2)
+    if not options.filter_by_capital: # Filters by country if capital filtering is not specified.
+        try:
+            cords = str(Q.get_country_coordinates(options.country)[0])
+            cords = re.split('\(|\)| ', cords)
+            with col2:
+                M.getMap([(cords[2], cords[1])], 4)
+        except:
+            "No coordinates found, blame wikidata, not us."
+    else: # Filter by capital
+        try:
+            cords = Q.get_capital_coordinates(options.capital)
+            with col2:
+                M.getMap(cords, 12)
+        except:
+            "No coordinates found, blame wikidata, not us."

@@ -158,10 +158,33 @@ def get_country_coordinates(country):
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     PREFIX : <http://www.tourism.org/group6/>
                     select * where { 
+                            :%s :hasCoordinates ?cordinates.
+                    } 
+                    """ % country)
+
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+    for result in results["results"]["bindings"]:
+        result1 = str(result["cordinates"]["value"])
+        if [result1] not in result_list:
+            result_list.append([result1])
+
+    if result_list == []:
+        result_list = "No results found, please try another option!"
+    return result_list
+
+def get_capital_coordinates(capital):
+    result_list = []
+    capital = capital.replace(" ", "%20")
+
+    sparql.setQuery("""
+                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX : <http://www.tourism.org/group6/>
+                    select * where { 
                             :%s :hasLatitude ?lat;
                                 :hasLongitude ?long.
                     } 
-                    """ % country)
+                    """ % capital)
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()

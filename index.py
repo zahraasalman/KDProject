@@ -21,44 +21,72 @@ def _max_width_():  # CSS to make screen in wide mode
         unsafe_allow_html=True,
     )
 
+def find_index(search_item, list):
+    i = 0
+    while i < len(list):
+        if search_item == list[i]:
+            return i
+        i += 1
+    return "Not found"
+
 
 def options():
-    return_list = {} #dictionary
+    return_list = {}  # dictionary
     continent = 'all'
     region = 'all'
     country = 'all'
 
     if st.checkbox("Filter by Continent"):
+        continents = {'continent': [], 'label': []}
+        for cont in Q.get_continents():
+            continents['continent'].append(cont[0])
+            continents['label'].append(cont[1])
         option_continent = st.selectbox(
             'Which continents?',
-            Q.get_continents())
+            continents['label'])
 
         if option_continent:
             return_list['continent'] = option_continent
-            continent = option_continent
+            index = find_index(option_continent, continents['label'])
+            continent = continents['continent'][index]
         else:
             "No results found, please select a continent or unselect the checkbox!"
 
     if st.checkbox("Filter by Region"):
+        regions = {'region': [], 'label': []}
+        for reg in Q.get_regions(continent):
+            regions['region'].append(reg[0])
+            regions['label'].append(reg[1])
         option_region = st.selectbox(
             'Which Region?',
-            Q.get_regions(continent))
+            regions['label'])
 
         if option_region:
-            return_list['continent'] = option_region
-            region = option_region
+            return_list['region'] = option_region
+            index = find_index(option_region, regions['label'])
+            region = regions['region'][index]
         else:
             "No results found, please select a region or unselect the checkbox!"
 
+    countries = {'country': [], 'label': []}
+    for count in Q.get_countries(continent, region):
+        countries['country'].append(count[0])
+        countries['label'].append(count[1])
     option_country = st.selectbox(
         'Which country?',
-        Q.get_countries(continent, region))
+        countries['label'])
     return_list["country"] = option_country
-    country = option_country
+    index = find_index(option_country, countries['label'])
+    country = countries['country'][index]
+
     if st.checkbox("Select Capital"):
+        capitals = {'capital': [], 'label': []}
+        for cap in Q.get_capitals(country):
+            capitals['capital'].append(cap[0])
+            capitals['label'].append(cap[1])
         option_capital = st.selectbox(
             'Which capital?',
-            Q.get_capitals(country))
+            capitals['label'])
         if option_capital:
             return_list["capital"] = option_capital
         else:

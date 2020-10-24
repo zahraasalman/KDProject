@@ -25,6 +25,24 @@ def _max_width_():  # CSS to make screen in wide mode
         unsafe_allow_html=True,
     )
 
+
+def background():  # CSS to change background
+    max_width_str = f"max-width: 2000px;"
+    st.markdown(
+        """
+    <style>
+    body {
+        color: Black;
+        background-color: BLACK;
+    }
+    p {color: #8EE4AF}
+    h1, h2, h3, h4, h5, h6 {font-family:serif; color: #EDF5E1}
+    </style>    
+    """,
+        unsafe_allow_html=True,
+    )
+
+
 def find_index(search_item, list):
     i = 0
     while i < len(list):
@@ -38,7 +56,6 @@ def options():
     return_list = {}  # dictionary
     options.filter_by_capital = False
     options.custom_coordinates = False
-    return_list = {} #dictionary
     continent = 'all'
     region = 'all'
     country = 'all'
@@ -55,7 +72,7 @@ def options():
             continents['label'].append(cont[1])
         option_continent = st.selectbox(
             'Which continents?',
-            continents['label'])
+            sorted(continents['label']))
 
         if option_continent:
             return_list['continent'] = option_continent
@@ -71,7 +88,7 @@ def options():
             regions['label'].append(reg[1])
         option_region = st.selectbox(
             'Which Region?',
-            regions['label'])
+            sorted(regions['label']))
 
         if option_region:
             return_list['region'] = option_region
@@ -86,7 +103,7 @@ def options():
         countries['label'].append(count[1])
     option_country = st.selectbox(
         'Which country?',
-        countries['label'])
+        sorted(countries['label']))
     return_list["country"] = option_country
     index = find_index(option_country, countries['label'])
     country = countries['country'][index]
@@ -100,15 +117,17 @@ def options():
             capitals['label'].append(cap[1])
         option_capital = st.selectbox(
             'Which capital?',
-            capitals['label'])
+            sorted(capitals['label']))
         if option_capital:
             return_list["capital"] = option_capital
+            index = find_index(option_capital, capitals['label'])
             capital = capitals['capital'][index]
             options.capital = capital  # individual or label?
         else:
             "No results found, please select a capital or unselect the checkbox!"
 
     return return_list
+
 
 def getMap(coordinates):  ### touples array! [(float, float), (float, float)]
     if not coordinates:  ## if no coordinates, show general map
@@ -123,7 +142,8 @@ def getMap(coordinates):  ### touples array! [(float, float), (float, float)]
 
 
 ############################### INTRODUCTION ####################################
-_max_width_()
+# _max_width_()
+# background()
 st.title("Welcome to <app name>")
 """
 This app is made to help you get your information before you travel to your touisty destination blah blah idc. \n
@@ -133,7 +153,7 @@ st.subheader("Please select the country or capital that you want to view")
 """
 
 """
-col1, col2 = st.beta_columns([2, 3])
+col1, col2 = st.beta_columns(2)
 
 with col1:
     results_from_funoptions = options()

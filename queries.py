@@ -39,7 +39,7 @@ def get_regions(continent='all'):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX : <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            select ?region ?regionlabel where { 
+            select distinct ?region ?regionlabel where { 
                 ?country rdf:type :Country;
                          :fromContinent ?continent;
                          :fromRegion ?region.      

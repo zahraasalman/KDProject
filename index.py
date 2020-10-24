@@ -105,23 +105,24 @@ with col1:
     for key, value in results_from_funoptions.items():
         "You selected " + key + ": " + value
 
-
-# I have decided to place the col2 in the button fucntion, the map will now appear as the user gives input.
-# Abandoned map.py as this required input from index.py which would cause an import circle and crash the program.
-
-if st.button('Find Places'):
+with col2:
     if not options.filter_by_capital: # Filters by country if capital filtering is not specified.
         try:
             cords = str(Q.get_country_coordinates(options.country)[0])
             cords = re.split('\(|\)| ', cords)
-            with col2:
-                M.getMap([(cords[2], cords[1])], 4)
+            M.getMap([(cords[2], cords[1])], 4)
         except:
             "No coordinates found, blame wikidata, not us."
     else: # Filter by capital
         try:
             cords = Q.get_capital_coordinates(options.capital)
-            with col2:
-                M.getMap(cords, 12)
+            M.getMap(cords, 12)
         except:
             "No coordinates found, blame wikidata, not us."
+
+
+# I have decided to place the col2 in the button fucntion, the map will now appear as the user gives input.
+# Abandoned map.py as this required input from index.py which would cause an import circle and crash the program.
+
+if st.button('Find Places'):
+    pass

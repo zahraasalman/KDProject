@@ -2,8 +2,12 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from streamlit_folium import folium_static
+import re
 
-import map
+import folium as f
+from streamlit_folium import folium_static
+
+import map as M
 import queries as Q
 
 
@@ -32,9 +36,17 @@ def find_index(search_item, list):
 
 def options():
     return_list = {}  # dictionary
+    options.filter_by_capital = False
+    options.custom_coordinates = False
+    return_list = {} #dictionary
     continent = 'all'
     region = 'all'
     country = 'all'
+
+    if st.checkbox("Enable custom coordinates"):
+        options.custom_coordinates = True
+        user_input = [(st.number_input("Latitude"), st.number_input("Longtitude"))]
+        options.user_coordinates = user_input
 
     if st.checkbox("Filter by Continent"):
         continents = {'continent': [], 'label': []}
@@ -78,8 +90,10 @@ def options():
     return_list["country"] = option_country
     index = find_index(option_country, countries['label'])
     country = countries['country'][index]
+    options.country = country  # individual or label?
 
     if st.checkbox("Select Capital"):
+        options.filter_by_capital = True
         capitals = {'capital': [], 'label': []}
         for cap in Q.get_capitals(country):
             capitals['capital'].append(cap[0])
@@ -89,10 +103,23 @@ def options():
             capitals['label'])
         if option_capital:
             return_list["capital"] = option_capital
+            capital = capitals['capital'][index]
+            options.capital = capital  # individual or label?
         else:
             "No results found, please select a capital or unselect the checkbox!"
 
     return return_list
+
+def getMap(coordinates):  ### touples array! [(float, float), (float, float)]
+    if not coordinates:  ## if no coordinates, show general map
+        return folium_static(f.Map())
+
+    mapIt = f.Map()
+    for coord in coordinates:
+        mapIt = f.Map(location=[coord[0], coord[1]], zoom_start=4)
+        f.Marker([coord[0], coord[1]]).add_to(mapIt)
+
+    return folium_static(mapIt)
 
 
 ############################### INTRODUCTION ####################################
@@ -114,7 +141,25 @@ with col1:
         "You selected " + key + ": " + value
 
 with col2:
-    folium_static(map.m)
+    if not options.custom_coordinates: # Experimental feature to insert custom coordinates to test certain spots on the map.
+        if not options.filter_by_capital: # Filters by country if capital filtering is not specified.
+            try:
+                cords = str(Q.get_country_coordinates(options.country)[0])
+                cords = re.split('\(|\)| ', cords)
+                M.getMap([(cords[2], cords[1])], 4)
+            except:
+                "No coordinates found, blame wikidata, not us."
+        else: # Filter by capital
+            try:
+                cords = Q.get_capital_coordinates(options.capital)
+                M.getMap(cords, 12)
+            except:
+                "No coordinates found, blame wikidata, not us."
+    else: # Check inserted coordinates on the map.
+        M.getMap(options.user_coordinates, 4)
+
+# I have decided to place the col2 in the button fucntion, the map will now appear as the user gives input.
+# Abandoned map.py as this required input from index.py which would cause an import circle and crash the program.
 
 if st.button('Find Places'):
     "I want to die"

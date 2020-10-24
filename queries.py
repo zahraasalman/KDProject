@@ -3,9 +3,6 @@ import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-# sparql = SPARQLWrapper("https://kd-project.vercel.app/ontologyWithData.ttl")
-# sparql = SPARQLWrapper("https://kd-project.vercel.app/statements.rj")
-# sparql = SPARQLWrapper("https://projectkd-a951ufu8j.vercel.app/graph.json")
 sparql = SPARQLWrapper("http://192.168.1.103:7200/repositories/FinalProject")
 
 
@@ -165,7 +162,32 @@ def get_capitals(country):  # could be changed to get cities
 
 
 def get_country_coordinates(country):
+    # The cordinates are fucked, probably a faulty css or an import error from GraphDB
+    # Mexico is the only working version, the rest is borked, wil investigate tomorrow. (23 okt)
     result_list = []
+
+    sparql.setQuery("""
+                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX : <http://www.tourism.org/group6/>
+                    select * where { 
+                            :%s :hasCoordinates ?cordinates.
+                    } 
+                    """ % country)
+
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+    for result in results["results"]["bindings"]:
+        result1 = str(result["cordinates"]["value"])
+        if [result1] not in result_list:
+            result_list.append([result1])
+
+    if result_list == []:
+        result_list = "No results found, please try another option!"
+    return result_list
+
+def get_capital_coordinates(capital):
+    result_list = []
+    capital = capital.replace(" ", "%20")
 
     sparql.setQuery("""
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -176,7 +198,7 @@ def get_country_coordinates(country):
                                 :hasLatitude ?lat;
                                 :hasLongitude ?long.
                     } 
-                    """ % country)
+                    """ % capital)
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()

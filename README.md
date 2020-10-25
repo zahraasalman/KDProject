@@ -5,8 +5,8 @@ This application is created to give the user information about any country or ca
 <h4>Installation:</h4>
 <ul>
 <li>Open the application folder in your terminal and execute the following command: 
-<code>pip install -U -r requirements.txt</code>
 <ul>
+<code>pip install -U -r requirements.txt</code>
 <li>This command installs all required modules to execute the application </li>
 </li>
 </ul>

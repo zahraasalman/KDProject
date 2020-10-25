@@ -1,6 +1,14 @@
 import folium as f
 from streamlit_folium import folium_static
 
-m = f.Map(location=[45.5236, -122.6750])
 
-folium_static(m)
+def getMap(coordinates, zoom):  ### touples array! [(float, float), (float, float)]
+    if not coordinates:  ## if no coordinates, show general map
+        return folium_static(f.Map())
+
+    mapIt = f.Map()
+    for coord in coordinates:
+        mapIt = f.Map(location=[coord[0], coord[1]], zoom_start=zoom)
+        f.Marker([coord[0], coord[1]]).add_to(mapIt)
+
+    return folium_static(mapIt)

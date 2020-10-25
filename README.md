@@ -1,2 +1,0 @@
-# KDProject
-Send help

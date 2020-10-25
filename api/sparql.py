@@ -7,7 +7,7 @@ app = Flask(__name__)
 CORS(app)
 
 # opening the graph without parsing it (otherwise function runs too long)
-with open('./ontology_pickled.pk', 'rb') as fi:
+with open('ontology_pickled.pk', 'rb') as fi:
     g = pickle.load(fi)
 
 

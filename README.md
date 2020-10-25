@@ -6,12 +6,12 @@ This application is created to give the user information about any country or ca
 <ul>
 <li>Open the application folder in your terminal and execute the following command: 
 <ul>
-<li><code>pip install -U -r requirements.txt</code></li>
+<code>pip install -U -r requirements.txt</code>
 <li>This command installs all required modules to execute the application </li>
 </li>
 </ul>
 <li>To run the application, in the location where the application files are located, execute the following command: </li>
-<li><code>streamlit run index.py </code></li>
+<code>streamlit run index.py </code>
 </ul>
 
 <h4>Usage:</h4>

@@ -26,8 +26,6 @@ def get_continents():
 
         result_list.append((continent, continentlabel))
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 
@@ -65,9 +63,6 @@ def get_regions(continent='all'):
         region = result["region"]["value"].split('/')[-1]
         regionlabel = result["regionlabel"]["value"]
         result_list.append((region, regionlabel))
-
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 
@@ -129,8 +124,6 @@ def get_countries(continent='all', region='all'):
         countrylabel = result["countrylabel"]["value"]
         result_list.append((country, countrylabel))
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 
@@ -156,8 +149,6 @@ def get_capitals(country):  # could be changed to get cities
         capitallabel = result["capitallabel"]["value"]
         result_list.append((capital, capitallabel))
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 
@@ -181,8 +172,6 @@ def get_country_coordinates(country):
         if [result1] not in result_list:
             result_list.append([result1])
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 def get_capital_coordinates(capital):
@@ -208,8 +197,6 @@ def get_capital_coordinates(capital):
         if [result1, result2] not in result_list:
             result_list.append([result1, result2])
 
-    if result_list == []:
-        result_list = "No results found, please try another option!"
     return result_list
 
 

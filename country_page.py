@@ -6,7 +6,7 @@ def show(country=None):
     st.title(country)
 
     ### QUERIES ###
-    countyInfo = Q.get_country_basic_info(country)
+    countryInfo = Q.get_country_basic_info(country)
     languages = Q.get_country_languages(country)
     currency = Q.get_country_currency(country)
     nationalDish = Q.get_country_national_dish(country)
@@ -21,67 +21,74 @@ def show(country=None):
 
     st.markdown('** General Info **')
 
-    if countyInfo:
-        if country.abstract:
-            st.write(''' Abstract:  ''')
-            st.write(country.abstract)
-
-        if country.flag:
-            st.write(''' Flag:  ''')
-            st.write(country.flag)
-
-        if country.capital:
-            st.write(''' Capital city:  ''')
-            st.write(country.capital)
-
-        if country.population:
-            st.write(''' Population:  ''')
-            st.write(country.population)
+    if countryInfo:
+        for key, value in countryInfo.items():
+            st.markdown(key + ": " + value)
 
     if languages:
-        st.write(''' Languages:  ''')
+        result = ""
+        for language in languages[:-1]:
+            result += language + ", "
+        else:
+            result += language + ". "
 
-        for language in languages:
-            st.write(language + ", ")
+        st.markdown('Languages: ' + result)
 
     if currency:
-        st.write(''' Currency:  ''')
-        st.write(currency)
+        st.markdown('Currency: ' + currency)
 
     if nationalDish:
-        st.write(''' National Dish:  ''')
-        st.write(nationalDish)
+        st.markdown('National Dish: ' + nationalDish)
 
     if nationalAnimalPlant:
-        st.write(''' National animal or plant:  ''')
-        st.write(nationalAnimalPlant)
+        st.markdown('National animal or plant: ' + nationalAnimalPlant)
 
     if food:
-        st.write(''' Food:  ''')
+        result = ""
 
-        for f in food:
-            st.write(f + ", ")
+        for f in food[:-1]:
+            result += f + ", "
+        else:
+            result += f + ". "
+
+        st.markdown('Food: ' + result)
 
     if resortTowns:
-        st.write(''' Resort Towns:  ''')
+        result = ""
 
-        for town in resortTowns:
-            st.write(town + ", ")
+        for town in resortTowns[:-1]:
+            result += town + ", "
+        else:
+            result += town + ". "
+
+        st.markdown('Resort Towns: ' + result)
 
     if landmarks:
-        st.write(''' Landmarks:  ''')
+        result = ""
 
-        for landmark in landmarks:
-            st.write(landmark + ", ")
+        for landmark in landmarks[:-1]:
+            result += landmark + ", "
+        else:
+            result += landmark + ". "
+
+        st.markdown('Landmarks: ' + result)
 
     if cities:
-        st.write(''' Main cities:  ''')
+        result = ""
 
-        for city in cities:
-            st.write(city + ", ")
+        for city in cities[:-1]:
+            result += city + ", "
+        else:
+            result += city + ". "
+
+        st.markdown('Cities: ' + result)
 
     if neighbours:
-        st.write(country + ''' neighbours:  ''')
+        result = ""
 
-        for neighbour in neighbours:
-            st.write(neighbour + ", ")
+        for neighbour in neighbours[:-1]:
+            result += neighbour + ", "
+        else:
+            result += neighbour + ". "
+
+        st.markdown('Neighbouring countries: ' + result)

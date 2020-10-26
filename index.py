@@ -2,6 +2,8 @@ import streamlit as st
 import pandas as pd
 import numpy as np
 from streamlit_folium import folium_static
+import city_page
+import country_page
 import re
 
 import folium as f
@@ -9,6 +11,12 @@ from streamlit_folium import folium_static
 
 import map as M
 import queries as Q
+
+# define pages
+PAGES = {
+    'countryDetail': country_page,
+    'cityDetail': city_page
+}
 
 
 ############################### FUNCTIONS ######################################
@@ -23,7 +31,7 @@ def _max_width_():  # CSS to make screen in wide mode
         justify-content: center;
 
     }}
-    </style>    
+    </style>
     """,
         unsafe_allow_html=True,
     )
@@ -37,7 +45,7 @@ def background():  # CSS to change background
     .reportview-container .main .block-container{
         justify-content: center;
     }
-    body { 
+    body {
         background-color: #141414;
     }
     p {color: #04b4a8;}
@@ -61,7 +69,7 @@ def background():  # CSS to change background
     element.style {
         color: white;
     }
-    </style>    
+    </style>
     """,
         unsafe_allow_html=True,
     )
@@ -233,8 +241,11 @@ with col2:
     else:  # Check inserted coordinates on the map.
         M.getMap(options.user_coordinates, 4)
 
-# I have decided to place the col2 in the button fucntion, the map will now appear as the user gives input.
-# Abandoned map.py as this required input from index.py which would cause an import circle and crash the program.
+# I have decided to place the col2 in the button function, the map will now appear as the user gives input.
 
 if st.button('Find Places'):
-    "I want to die"
+    if st.button('Find Places'):
+        if hasattr(options, 'capital'):
+            PAGES['cityDetail'].show(city=options.capital)
+        else:
+            PAGES['countryDetail'].show(country=options.country)

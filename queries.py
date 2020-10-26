@@ -514,9 +514,9 @@ def get_city_landmarks(capital):
     results = sparql.query().convert()
 
     for result in results["results"]["bindings"]:
-        landmark = result["landmark"]["value"]
+        # landmark = result["landmark"]["value"]
         landmarkLabel = result["landmarklabel"]["value"]
-        result_list.append((landmark, landmarkLabel))
+        result_list.append(landmarkLabel)
 
     return result_list
 
@@ -544,9 +544,9 @@ def get_city_theaters(capital):
     results = sparql.query().convert()
 
     for result in results["results"]["bindings"]:
-        theater = result["theater"]["value"]
+        # theater = result["theater"]["value"]
         theaterLabel = result["theaterlabel"]["value"]
-        result_list.append((theater, theaterLabel))
+        result_list.append(theaterLabel)
 
     return result_list
 
@@ -572,9 +572,9 @@ def get_city_markets(capital):
     results = sparql.query().convert()
 
     for result in results["results"]["bindings"]:
-        market = result["market"]["value"]
+        # market = result["market"]["value"]
         marketLabel = result["marketlabel"]["value"]
-        result_list.append((market, marketLabel))
+        result_list.append(marketLabel)
 
     return result_list
 
@@ -600,9 +600,9 @@ def get_city_parks(capital):
     results = sparql.query().convert()
 
     for result in results["results"]["bindings"]:
-        park = result["park"]["value"]
+        # park = result["park"]["value"]
         parkLabel = result["parklabel"]["value"]
-        result_list.append((park, parkLabel))
+        result_list.append(parkLabel)
 
     return result_list
 
@@ -628,9 +628,9 @@ def get_city_theme_parks(capital):
     results = sparql.query().convert()
 
     for result in results["results"]["bindings"]:
-        themepark = result["themepark"]["value"]
+        # themepark = result["themepark"]["value"]
         themeparkLabel = result["themeparklabel"]["value"]
-        result_list.append((themepark, themeparkLabel))
+        result_list.append(themeparkLabel)
 
     return result_list
 

@@ -179,6 +179,7 @@ def options():
             option_capital = st.selectbox(
                 'Which city?',
                 sorted(capitals['label']))
+
             if option_capital:
                 return_list["capital"] = option_capital
                 index = find_index(option_capital, capitals['label'])
@@ -250,8 +251,7 @@ with col2:
 # I have decided to place the col2 in the button function, the map will now appear as the user gives input.
 
 if st.button('Find Places'):
-    if st.button('Find Places'):
-        if hasattr(options, 'capital'):
-            PAGES['cityDetail'].show(city=options.capital)
-        else:
-            PAGES['countryDetail'].show(country=options.country)
+    if hasattr(options, 'capital'):
+        PAGES['cityDetail'].show(city=options.capital)
+    else:
+        PAGES['countryDetail'].show(country=options.country)

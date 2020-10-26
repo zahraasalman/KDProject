@@ -2,10 +2,11 @@ import rdflib
 import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
+import streamlit as st
 
 
 ##################### INSERT THE ENDPOINT LINK HERE AS A STRING REPLACING THE CURRENT ONE #############################
-endpoint = "http://192.168.1.103:7200/repositories/FinalProject"
+endpoint = None
 #######################################################################################################################
 sparql = SPARQLWrapper(endpoint)
 

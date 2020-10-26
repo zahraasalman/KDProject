@@ -1,4 +1,4 @@
-<h1>Welcome to (insert app name)</h1>
+<h1>Welcome to TouristiQ</h1>
 
 This application is created to give the user information about any country or capital.
 

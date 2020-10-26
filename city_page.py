@@ -7,6 +7,7 @@ def show(city=None, cityName=None):
 
     ### QUERIES ###
     cityInfo = Q.get_city_basic_info(city)
+    population = Q.get_city_population(city)
     landmarks = Q.get_city_landmarks(city)
     theaters = Q.get_city_theaters(city)
     # markets = Q.get_city_markets(city)

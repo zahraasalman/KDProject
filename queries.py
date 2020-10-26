@@ -3,8 +3,11 @@ import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-sparql = SPARQLWrapper("http://192.168.1.103:7200/repositories/FinalProject")
 
+##################### INSERT THE ENDPOINT LINK HERE AS A STRING REPLACING THE CURRENT ONE #############################
+endpoint = "http://192.168.1.103:7200/repositories/FinalProject"
+#######################################################################################################################
+sparql = SPARQLWrapper(endpoint)
 
 def get_continents():
     result_list = []
@@ -489,22 +492,40 @@ def get_city_basic_info(capital):
 
                        select * where {
                             ex:%s rdf:type ex:Capital;
-                                  ex:hasAbstract ?abstract;
-                                  optional{ex:%s ex:hasPopulation ?population.}
+                                  ex:hasAbstract ?abstract.
                         }
 
-                        """ % (capital, capital))
+                        """ % capital)
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
 
     for result in results["results"]["bindings"]:
         abstract = result["abstract"]["value"]
-        population = result["population"]["value"]
-
         result_list['Abstract'] = abstract
-        if population:
-            result_list['Population'] = population
+
+    return result_list
+
+def get_city_population(capital):
+    result_list = {}
+
+    sparql.setQuery("""
+                       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                       PREFIX ex: <http://www.tourism.org/group6/>
+
+                       select * where {
+                            ex:%s rdf:type ex:Capital;
+                                 ex:hasPopulation ?population.
+                        }
+
+                        """ % capital)
+
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    for result in results["results"]["bindings"]:
+        population = result["population"]["value"]
+        result_list['Population'] = population
 
     return result_list
 

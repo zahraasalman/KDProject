@@ -29,7 +29,6 @@ def _max_width_():  # CSS to make screen in wide mode
         {max_width_str}
         display: inline;
         justify-content: center;
-
     }}
     </style>
     """,
@@ -212,7 +211,7 @@ def getMap(coordinates):  ### touples array! [(float, float), (float, float)]
 ############################### INTRODUCTION ####################################
 _max_width_()
 background()
-st.title("WELCOME TO <APP NAME>")
+st.title("WELCOME TO TOURISTIQ")
 """
 This app is made to help you get your information before you travel to your touisty destination blah blah idc. \n
 This is multi-line and it's awesome
@@ -222,7 +221,6 @@ col1, col2 = st.beta_columns([2, 3])
 with col1:
     st.subheader("Please select the country or city that you want to view")
     """
-
     """
     results_from_funoptions = options()
     for key, value in results_from_funoptions.items():
@@ -237,8 +235,8 @@ with col2:
                 M.getMap([(cords[2], cords[1])], 4)
             except:
                 st.markdown("<font color='red' face='monospace' size='+2'><b>"
-                            "No coordinates found, blame Wikidata, not us."
-                            "This doesn't mean your option is invalid, please continue"
+                            "Oops! It appears that our external databases do not yet contain the coordinates of this country."
+                            "This doesn't mean your option is invalid, please continue."
                             "</b></font>", unsafe_allow_html=True)
         else:  # Filter by capital
             try:
@@ -246,8 +244,8 @@ with col2:
                 M.getMap(cords, 12)
             except:
                 st.markdown("<font color='red' face='monospace' size='+2'><b>"
-                            "No coordinates found, blame Wikidata, not us."
-                            "This doesn't mean your option is invalid, please continue"
+                            "Oops! It appears that our external databases do not yet contain the coordinates of this country."
+                            "This doesn't mean your option is invalid, please continue."
                             "</b></font>", unsafe_allow_html=True)
     else:  # Check inserted coordinates on the map.
         M.getMap(options.user_coordinates, 4)

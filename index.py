@@ -235,8 +235,8 @@ with col2:
                 M.getMap([(cords[2], cords[1])], 4)
             except:
                 st.markdown("<font color='red' face='monospace' size='+2'><b>"
-                            "No coordinates found, blame Wikidata, not us."
-                            "This doesn't mean your option is invalid, please continue"
+                            "Oops! It appears that our external databases do not yet contain the coordinates of this country."
+                            "This doesn't mean your option is invalid, please continue."
                             "</b></font>", unsafe_allow_html=True)
         else:  # Filter by capital
             try:
@@ -246,8 +246,8 @@ with col2:
                 M.getMap(cords, 12)
             except:
                 st.markdown("<font color='red' face='monospace' size='+2'><b>"
-                            "No coordinates found, blame Wikidata, not us."
-                            "This doesn't mean your option is invalid, please continue"
+                            "Oops! It appears that our external databases do not yet contain the coordinates of this country."
+                            "This doesn't mean your option is invalid, please continue."
                             "</b></font>", unsafe_allow_html=True)
     else:  # Check inserted coordinates on the map.
         M.getMap(options.user_coordinates, 4)

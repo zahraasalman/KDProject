@@ -166,7 +166,7 @@ def options():
                     "No results found..."
                     "</b></font>", unsafe_allow_html=True)
 
-    if st.checkbox("Select Capital"):
+    if st.checkbox("Select City"):
         options.filter_by_capital = True
         capitals = {'capital': [], 'label': []}
         result_list = Q.get_capitals(country)
@@ -179,14 +179,16 @@ def options():
                 capitals['capital'].append(cap[0])
                 capitals['label'].append(cap[1])
             option_capital = st.selectbox(
-                'Which capital?',
+                'Which City?',
                 sorted(capitals['label']))
 
             if option_capital:
                 return_list["capital"] = option_capital
                 index = find_index(option_capital, capitals['label'])
                 capital = capitals['capital'][index]
-                options.capital = capital  # individual or label?
+                options.capital = capital
+                "eh " + options.capital
+                options.capitallabel = option_capital
             else:
                 st.markdown("<font color='red' face='monospace' size='+1'><b>"
                             "No results found, please select a capital or unselect the checkbox!"
@@ -240,9 +242,7 @@ with col2:
                             "</b></font>", unsafe_allow_html=True)
         else:  # Filter by capital
             try:
-                print("it works fam")
                 cords = Q.get_capital_coordinates(options.capital)
-                print(cords)
                 M.getMap(cords, 12)
             except:
                 st.markdown("<font color='red' face='monospace' size='+2'><b>"
@@ -256,6 +256,6 @@ with col2:
 
 if st.button('Find Places'):
     if hasattr(options, 'capital'):
-        PAGES['cityDetail'].show(city=options.capital)
+        PAGES['cityDetail'].show(city=options.capital, cityName=options.capitallabel)
     else:
         PAGES['countryDetail'].show(country=options.country, countrylabel=options.countrylabel)

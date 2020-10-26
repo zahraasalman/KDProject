@@ -480,6 +480,34 @@ def get_country_resort_towns(country):
 
 ## CAPITAL PAGE
 
+def get_city_basic_info(capital):
+    result_list = {}
+
+    sparql.setQuery("""
+                       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                       PREFIX ex: <http://www.tourism.org/group6/>
+
+                       select * where {
+                            ex:%s rdf:type ex:Capital;
+                                  ex:hasAbstract ?abstract;
+                                  optional{ex:%s ex:hasPopulation ?population.}
+                        }
+
+                        """ % (capital, capital))
+
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    for result in results["results"]["bindings"]:
+        abstract = result["abstract"]["value"]
+        population = result["population"]["value"]
+
+        result_list['Abstract'] = abstract
+        if population:
+            result_list['Population'] = population
+
+    return result_list
+
 def get_city_landmarks(capital):
     result_list = []
 

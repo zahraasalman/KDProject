@@ -33,6 +33,9 @@ def show(country=None, countrylabel=None):
                         pass
                     elif key == 'Capitallabel':
                         st.markdown('**Capital: **' + value)
+                    # elif key == 'Flag':
+                    #     flag = value.replace(" ", "_")
+                    #     st.markdown('**' + key + ":** " f"![Flag of {country}](https://upload.wikimedia.org/wikipedia/commons/2/20/{flag})")
                     else:
                         st.markdown('**' + key + ":** " + value)
 
@@ -47,6 +50,9 @@ def show(country=None, countrylabel=None):
         if currency and not any(char.isdigit() for char in currency[0][1]):
             st.markdown('**Currency:** ' + currency[0][1])
 
+        if currency and not any(char.isdigit() for char in currency[0][2]):
+            st.markdown('**Currency Code:** ' + currency[0][2])
+
         if nationalDish and not any(char.isdigit() for char in nationalDish[0][1]):
             st.markdown('**National Dish:** ' + nationalDish[0][1])
 
@@ -57,7 +63,7 @@ def show(country=None, countrylabel=None):
             result = ""
 
             for f in food:
-                if any(char.isdigit() for char in f):
+                if not any(char.isdigit() for char in f[1]):
                     result += f[1] + ", "
             if result != '':
                 st.markdown('**Food:** ' + result[:-2] + '. ')
@@ -66,7 +72,7 @@ def show(country=None, countrylabel=None):
             result = ""
 
             for town in resortTowns:
-                if not any(char.isdigit() for char in f):
+                if not any(char.isdigit() for char in town[1]):
                     result += town[1] + ", "
             if result != '':
                 st.markdown('**Resort Towns:** ' + result[:-2] + '. ')
@@ -75,7 +81,7 @@ def show(country=None, countrylabel=None):
             result = ""
 
             for landmark in landmarks:
-                if not any(char.isdigit() for char in landmark):
+                if not any(char.isdigit() for char in landmark[1]):
                     result += landmark[1] + ", "
             if result != '':
                 st.markdown('**Landmarks:** ' + result[:-2] + '. ')

@@ -310,8 +310,9 @@ def get_country_currency(country):
 
     for result in results["results"]["bindings"]:
         currency = result["currency"]["value"]
+        currencyCode = result["currencycodelabel"]["value"]
         currencyLabel = result["currencylabel"]["value"]
-        result_list.append((currency, currencyLabel))
+        result_list.append([currency, currencyLabel, currencyCode])
 
     return result_list
 
@@ -506,28 +507,6 @@ def get_city_basic_info(capital):
 
     return result_list
 
-def get_city_population(capital):
-    result_list = {}
-
-    sparql.setQuery("""
-                       PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                       PREFIX ex: <http://www.tourism.org/group6/>
-
-                       select * where {
-                            ex:%s rdf:type ex:Capital;
-                                 ex:hasPopulation ?population.
-                        }
-
-                        """ % capital)
-
-    sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
-
-    for result in results["results"]["bindings"]:
-        population = result["population"]["value"]
-        result_list['Population'] = population
-
-    return result_list
 
 def get_city_landmarks(capital):
     result_list = []

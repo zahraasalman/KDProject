@@ -153,10 +153,16 @@ def options():
     option_country = st.selectbox(
         'Which country?',
         sorted(countries['label']))
-    return_list["country"] = option_country
-    index = find_index(option_country, countries['label'])
-    country = countries['country'][index]
-    options.country = country  # individual or label?
+
+    if option_country:  ## if there is an option, then we save it in the list
+        return_list["country"] = option_country
+        index = find_index(option_country, countries['label'])
+        country = countries['country'][index]
+        options.country = country  # individual or label?
+    else:
+        st.markdown("<font color='red' face='monospace' size='+1'><b>"
+                    "No results found..."
+                    "</b></font>", unsafe_allow_html=True)
 
     if st.checkbox("Select City"):
         options.filter_by_capital = True

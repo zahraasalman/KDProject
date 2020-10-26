@@ -29,7 +29,8 @@ def show(country=None):
         if countryInfo:
             for key, value in countryInfo.items():
                 if not key == 'Abstract':
-                    st.markdown('**' + key + ":** " + value)
+                    newValue = value.replace("%20", " ")
+                    st.markdown('**' + key + ":** " + newValue)
 
         if languages:
             result = ""

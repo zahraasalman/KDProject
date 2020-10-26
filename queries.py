@@ -135,6 +135,7 @@ def get_capitals(country):  # could be changed to get cities
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
                     PREFIX : <http://www.tourism.org/group6/>
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    
                     select ?capital ?capitallabel where { 
                         :%s :hasCapital ?capital.
                         ?capital rdfs:label ?capitallabel.
@@ -174,6 +175,7 @@ def get_country_coordinates(country):
 
     return result_list
 
+
 def get_capital_coordinates(capital):
     result_list = []
     capital = capital.replace(" ", "%20")
@@ -202,15 +204,15 @@ def get_capital_coordinates(capital):
 
 ###COUTRY QUERIES
 def get_country_basic_info(country):
-    result_list = []
+    result_list = {}
     country = country.replace(" ", "%20")
 
     sparql.setQuery("""
                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                        PREFIX ex: <http://www.tourism.org/group6/>
-
-                        select * where {
-                            :%s rdf:type ex:Country;
+                       PREFIX ex: <http://www.tourism.org/group6/>
+                       
+                       select * where {
+                            ex:%s rdf:type ex:Country;
                                   ex:hasAbstract ?abstract;
                                   ex:hasFlag ?flag;
                                   ex:hasCapital ?capital;
@@ -221,38 +223,44 @@ def get_country_basic_info(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
         abstract = result["abstract"]["value"]
         flag = result["flag"]["value"]
-        capital = result["capital"]["value"]
+        capital = result["capital"]["value"].split('/')[-1]
         population = result["population"]["value"]
 
-        result_list.append((abstract, flag, capital, population))
+        result_list['Abstract'] = abstract
+        result_list['Flag'] = flag
+        result_list['Capital'] = capital
+        result_list['Population'] = population
 
     return result_list
 
 
+##TODO: does not work, please fix?
 def get_country_neighbors(country):
-    result_list = []
-    country = country.replace(" ", "%20")
-
-    sparql.setQuery("""
-                      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-                      PREFIX ex: <http://www.tourism.org/group6/>
-
-                      select * where {
-                         :%s rdf:type ex:Country;
-                                ex:sharesBordersWith ?neighboringcountry.
-                        """ % country)
-
-    sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
-
-    for result in results["results"]["bindings"]:
-        neighbor = result["neighboringcountry"]["value"]
-        result_list.append(neighbor)
-
-    return result_list
+    pass
+    # result_list = []
+    # country = country.replace(" ", "%20")
+    #
+    # sparql.setQuery("""
+    #                   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+    #                   PREFIX ex: <http://www.tourism.org/group6/>
+    #
+    #                   select * where {
+    #                      ex:%s rdf:type ex:Country;
+    #                             ex:sharesBordersWith ?neighboringcountry.
+    #                     """ % country)
+    #
+    # sparql.setReturnFormat(JSON)
+    # results = sparql.query().convert()
+    #
+    # for result in results["results"]["bindings"]:
+    #     neighbor = result["neighboringcountry"]["value"]
+    #     result_list.append(neighbor)
+    #
+    # return result_list
 
 
 def get_country_languages(country):
@@ -265,7 +273,7 @@ def get_country_languages(country):
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
                     select * where {
-                        :%s rdf:type ex:Country;
+                        ex:%s rdf:type ex:Country;
                               ex:hasLanguage ?language.
 
                         ?language rdfs:label ?languagelabel.
@@ -276,9 +284,9 @@ def get_country_languages(country):
     results = sparql.query().convert()
 
     for result in results["results"]["bindings"]:
-        language = result["language"]["value"]
+        # language = result["language"]["value"]
         languageLabel = result["languagelabel"]["value"]
-        result_list.append((language, languageLabel))
+        result_list.append(languageLabel)
 
     return result_list
 
@@ -294,7 +302,7 @@ def get_country_currency(country):
 
                         select * where {
                             ?currency rdf:type ex:Currency;
-                                    ex:fromCountry :%s;
+                                    ex:fromCountry ex:%s;
                                     ex:hasCurrencyCode ?currencycode.
 
                             ?currency rdfs:label ?currencylabel.
@@ -323,7 +331,7 @@ def get_country_cities(country):
                         PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
                         select * where {
-                            :%s rdf:type ex:Country;
+                            ex:%s rdf:type ex:Country;
                                         ex:hasCity ?city.
 
                             ?city rdfs:label ?citylabel.
@@ -334,9 +342,9 @@ def get_country_cities(country):
     results = sparql.query().convert()
 
     for result in results["results"]["bindings"]:
-        city = result["city"]["value"]
+        # city = result["city"]["value"].split('/')[-1]
         cityLabel = result["citylabel"]["value"]
-        result_list.append((city, cityLabel))
+        result_list.append(cityLabel)
 
     return result_list
 
@@ -352,7 +360,7 @@ def get_country_landmarks(country):
 
                 select * where {
                 	?landmark rdf:type ex:Landmark;
-                           ex:fromCountry :%s;
+                           ex:fromCountry ex:%s;
                            ex:fromCity ?city;
                            rdfs:label ?landmarklabel;
                            ex:hasCoordinates ?landmarkcoordinates.
@@ -377,14 +385,14 @@ def get_country_national_dish(country):
     country = country.replace(" ", "%20")
 
     sparql.setQuery("""
-                PREFIX rdf: < http: // www.w3.org / 1999 / 02 / 22 - rdf - syntax - ns  # >
-                PREFIX ex: < http: // www.tourism.org / group6 / >
-                PREFIX rdfs: < http: // www.w3.org / 2000 / 01 / rdf - schema  # >
+                PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                PREFIX ex: <http://www.tourism.org/group6/>
+                PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
 
                 select * where {
-                        ?nationaldish rdf: type ex: National_Dish;
-                                      ex: fromCountry  :%s;
-                                      rdfs: label ?nationaldishlabel.
+                        ?nationaldish rdf:type ex:National_Dish;
+                                      ex:fromCountry  ex:%s;
+                                      rdfs:label ?nationaldishlabel.
                 }
                          """ % country)
 
@@ -410,7 +418,7 @@ def get_country_national_animal_plant(country):
 
             select * where {
                 ?nationalanimalorplant rdf:type ex:National_Animal_Or_Plant;
-                       ex:fromCountry :%s;
+                       ex:fromCountry ex:%s;
                        rdfs:label ?nationalanimalorplantlabel.
             }
                          """ % country)
@@ -437,7 +445,7 @@ def get_country_food(country):
 
             select * where {
                 ?food rdf:type ex:Food;
-                       ex:fromCountry :%s;
+                       ex:fromCountry ex:%s;
                        rdfs:label ?foodlabel.
 
                 FILTER (!EXISTS {?food rdf:type ex:National_Dish})
@@ -466,7 +474,7 @@ def get_country_resort_towns(country):
 
             select * where {
                 ?resorttown rdf:type ex:ResortTown;
-                       ex:fromCountry :%s;
+                       ex:fromCountry ex:%s;
                        rdfs:label ?resorttownlabel;
                        ex:hasCoordinates ?resorttowncoordinates.
             }
@@ -496,7 +504,7 @@ def get_city_landmarks(capital):
 
             select * where {
                 ?landmark rdf:type ex:Landmark;
-                       ex:fromCity :%s;
+                       ex:fromCity ex:%s;
                        rdfs:label ?landmarklabel;
                        ex:hasCoordinates ?landmarkcoordinates.
             }
@@ -525,7 +533,7 @@ def get_city_theaters(capital):
 
             select * where {
                 ?theater rdf:type ex2:Theatre;
-                       ex:fromCity :%s;
+                       ex:fromCity ex:%s;
                        rdfs:label ?theaterlabel;
                        ex:hasCoordinates ?theatercoordinates.
             }
@@ -554,7 +562,7 @@ def get_city_markets(capital):
 
             select * where {
                 ?market rdf:type ex:Market;
-                       ex:fromCity :%s;
+                       ex:fromCity ex:%s;
                        rdfs:label ?marketlabel;
                        ex:hasCoordinates ?marketcoordinates.
             }
@@ -582,7 +590,7 @@ def get_city_parks(capital):
 
             select * where {
                 ?park rdf:type ex:Park;
-                       ex:fromCity :%s;
+                       ex:fromCity ex:%s;
                        rdfs:label ?parklabel;
                        ex:hasCoordinates ?parkcoordinates.
             }
@@ -610,7 +618,7 @@ def get_city_theme_parks(capital):
 
             select * where {
                 ?themepark rdf:type ex:Theme_Park;
-                       ex:fromCity :%s;
+                       ex:fromCity ex:%s;
                        rdfs:label ?themeparklabel;
                        ex:hasCoordinates ?themeparkcoordinates.
             }

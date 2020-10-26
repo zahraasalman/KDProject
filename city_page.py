@@ -3,7 +3,8 @@ import queries as Q
 
 
 def show(city=None):
-    st.title(city)
+    cityName = city.replace("%20", " ")
+    st.title(cityName)
 
     ### QUERIES ###
     landmarks = Q.get_city_landmarks(city)

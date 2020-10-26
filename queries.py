@@ -3,7 +3,7 @@ import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-sparql = SPARQLWrapper("http://192.168.1.103:7200/repositories/FinalProject")
+sparql = SPARQLWrapper("http://192.168.178.122:7200/repositories/TestKD3")
 
 
 def get_continents():
@@ -200,7 +200,31 @@ def get_capital_coordinates(capital):
             result_list.append([result1, result2])
 
     return result_list
+    
+def get_city_coordinates(city):
+    result_list = []
+    city = city.replace(" ", "%20")
 
+    sparql.setQuery("""
+                    PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                    PREFIX : <http://www.tourism.org/group6/>
+                    PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
+                    select * where { 
+                            :%s rdf:type :City;
+                                :hasLatitude ?lat;
+                                :hasLongitude ?long.
+                    } 
+                    """ % city)
+
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+    for result in results["results"]["bindings"]:
+        result1 = float(result["lat"]["value"])
+        result2 = float(result["long"]["value"])
+        if [result1, result2] not in result_list:
+            result_list.append([result1, result2])
+
+    return result_list
 
 ###COUTRY QUERIES
 def get_country_basic_info(country):

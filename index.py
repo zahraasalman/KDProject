@@ -193,17 +193,19 @@ def options():
 
     return return_list
 
+def get_cities(country):
+    cities = Q.get_country_cities(country)
+    cities_utilities_list = []
+    for city in cities:
+        label = city
+        coordinates = Q.get_city_coordinates(city)
+        if coordinates == []:
+            coordinates = None
+            print(label)
+            print(coordinates)
+        cities_utilities_list.append(tuple((label, coordinates)))
+    return cities_utilities_list
 
-def getMap(coordinates):  ### touples array! [(float, float), (float, float)]
-    if not coordinates:  ## if no coordinates, show general map
-        return folium_static(f.Map())
-
-    mapIt = f.Map()
-    for coord in coordinates:
-        mapIt = f.Map(location=[coord[0], coord[1]], zoom_start=4)
-        f.Marker([coord[0], coord[1]]).add_to(mapIt)
-
-    return folium_static(mapIt)
 
 
 ############################### INTRODUCTION ####################################
@@ -229,23 +231,26 @@ with col2:
     if not options.custom_coordinates:  # Experimental feature to insert custom coordinates to test certain spots on the map.
         if not options.filter_by_capital:  # Filters by country if capital filtering is not specified.
             try:
+                try:
+                    cities_utilities = get_cities(options.country)
+                    print(cities_utilities)
+                except:
+                    "Cities unable to be retrieved"
                 cords = str(Q.get_country_coordinates(options.country)[0])
                 cords = re.split('\(|\)| ', cords)
-                M.getMap([(cords[2], cords[1])], 4)
+                M.getMap([(cords[2], cords[1])], 4, cities_utilities)
             except:
                 st.markdown("<font color='red' face='monospace' size='+2'><b>"
-                            "No coordinates found, blame Wikidata, not us."
-                            "This doesn't mean your option is invalid, please continue"
+                            "Oops! It appears that our external databases do not yet contain the coordinates of this country."
+                            "This doesn't mean your option is invalid, please continue."
                             "</b></font>", unsafe_allow_html=True)
         else:  # Filter by capital
             try:
-                print("it works fam")
                 cords = Q.get_capital_coordinates(options.capital)
-                print(cords)
                 M.getMap(cords, 12)
             except:
                 st.markdown("<font color='red' face='monospace' size='+2'><b>"
-                            "No coordinates found, blame Wikidata, not us."
+                            "Oops! It appears that our external databases do not yet contain the coordinates of this country."
                             "This doesn't mean your option is invalid, please continue"
                             "</b></font>", unsafe_allow_html=True)
     else:  # Check inserted coordinates on the map.

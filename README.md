@@ -12,7 +12,7 @@ This application is created to give the user information about any country or ca
 </ul>
 <li>Before you can run the program, you need to insert a valid endpoint url at line 8 of queries.py.</li>
 <ul>
-<li><code>endpoint = None</code> Replace <it>None</it> by your own endpoint url.</li>
+<li><code>endpoint = None</code> Replace <em>None</em> by your own endpoint url.</li>
 <li>To run the application, in the location where the application files are located, execute the following command: </li>
 <code>streamlit run index.py </code>
 </ul>

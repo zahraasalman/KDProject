@@ -56,6 +56,7 @@ def background():  # CSS to change background
     }
     .Widget > label {
         color: #04b4a8;
+        color: #04b4a8;
         # max-width: 50%;
         }
     .st-at {

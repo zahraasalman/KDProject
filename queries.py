@@ -3,7 +3,7 @@ import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-sparql = SPARQLWrapper("http://192.168.178.122:7200/repositories/TestKD3")
+sparql = SPARQLWrapper("http://192.168.1.103:7200/repositories/FinalProject")
 
 
 def get_continents():
@@ -249,8 +249,7 @@ def get_country_neighbors(country):
     #                   PREFIX ex: <http://www.tourism.org/group6/>
     #
     #                   select * where {
-    #                      ex:%s rdf:type ex:Country;
-    #                             ex:sharesBordersWith ?neighboringcountry.
+    #                      ex:%s ex:sharesBordersWith ?neighboringcountry.}
     #                     """ % country)
     #
     # sparql.setReturnFormat(JSON)

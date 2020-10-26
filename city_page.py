@@ -18,9 +18,10 @@ def show(city=None):
     if landmarks:
         result = ""
         for landmark in landmarks[-1]:
-            result += landmark + ", "
+            print(landmark)
+            result += landmark[0][1] + ", "
         else:
-            result += landmark + ". "
+            result += ". "
 
         st.markdown('**Landmarks:** ' + result)
 

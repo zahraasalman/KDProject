@@ -153,7 +153,7 @@ def get_capitals(country):  # could be changed to get cities
 
 
 def get_country_coordinates(country):
-    # The cordinates are fucked, probably a faulty css or an import error from GraphDB
+    # The coordinates are fucked, probably a faulty css or an import error from GraphDB
     # Mexico is the only working version, the rest is borked, wil investigate tomorrow. (23 okt)
     result_list = []
 
@@ -200,6 +200,7 @@ def get_capital_coordinates(capital):
     return result_list
 
 
+###COUTRY QUERIES
 def get_country_basic_info(country):
     result_list = []
     country = country.replace(" ", "%20")
@@ -221,7 +222,12 @@ def get_country_basic_info(country):
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
     for result in results["results"]["bindings"]:
-        pass
+        abstract = result["abstract"]["value"]
+        flag = result["flag"]["value"]
+        capital = result["capital"]["value"]
+        population = result["population"]["value"]
+
+        result_list.append((abstract, flag, capital, population))
 
     return result_list
 
@@ -241,8 +247,10 @@ def get_country_neighbors(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        neighbor = result["neighboringcountry"]["value"]
+        result_list.append(neighbor)
 
     return result_list
 
@@ -266,8 +274,11 @@ def get_country_languages(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        language = result["language"]["value"]
+        languageLabel = result["languagelabel"]["value"]
+        result_list.append((language, languageLabel))
 
     return result_list
 
@@ -293,8 +304,11 @@ def get_country_currency(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        currency = result["currency"]["value"]
+        currencyLabel = result["currencylabel"]["value"]
+        result_list.append((currency, currencyLabel))
 
     return result_list
 
@@ -318,8 +332,11 @@ def get_country_cities(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        city = result["city"]["value"]
+        cityLabel = result["citylabel"]["value"]
+        result_list.append((city, cityLabel))
 
     return result_list
 
@@ -346,8 +363,11 @@ def get_country_landmarks(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        landmark = result["landmark"]["value"]
+        landmarkLabel = result["landmarklabel"]["value"]
+        result_list.append((landmark, landmarkLabel))
 
     return result_list
 
@@ -370,8 +390,11 @@ def get_country_national_dish(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        nationalDish = result["nationaldish"]["value"]
+        nationalDishLabel = result["nationaldishlabel"]["value"]
+        result_list.append((nationalDish, nationalDishLabel))
 
     return result_list
 
@@ -384,8 +407,8 @@ def get_country_national_animal_plant(country):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX ex: <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-             
-            select * where { 
+
+            select * where {
                 ?nationalanimalorplant rdf:type ex:National_Animal_Or_Plant;
                        ex:fromCountry :%s;
                        rdfs:label ?nationalanimalorplantlabel.
@@ -394,8 +417,11 @@ def get_country_national_animal_plant(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        nationalAnimalPlant = result["nationalanimalorplant"]["value"]
+        nationalAnimalPlantLabel = result["nationalanimalorplantlabel"]["value"]
+        result_list.append((nationalAnimalPlant, nationalAnimalPlantLabel))
 
     return result_list
 
@@ -408,20 +434,23 @@ def get_country_food(country):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX ex: <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-             
-            select * where { 
+
+            select * where {
                 ?food rdf:type ex:Food;
                        ex:fromCountry :%s;
                        rdfs:label ?foodlabel.
-                
+
                 FILTER (!EXISTS {?food rdf:type ex:National_Dish})
-}
+                }
                          """ % country)
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        food = result["food"]["value"]
+        foodLabel = result["foodlabel"]["value"]
+        result_list.append((food, foodLabel))
 
     return result_list
 
@@ -434,8 +463,8 @@ def get_country_resort_towns(country):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX ex: <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-             
-            select * where { 
+
+            select * where {
                 ?resorttown rdf:type ex:ResortTown;
                        ex:fromCountry :%s;
                        rdfs:label ?resorttownlabel;
@@ -445,37 +474,18 @@ def get_country_resort_towns(country):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        resortTown = result["resorttown"]["value"]
+        resortTowLabel = result["resorttownlabel"]["value"]
+        result_list.append((resortTown, resortTowLabel))
 
     return result_list
 
 
 ## CAPITAL PAGE
-def get_capitals():
-    result_list = []
 
-    # capitals list (to loop over), labels to use in text
-    sparql.setQuery("""
-        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-        PREFIX ex: <http://www.tourism.org/group6/>
-        PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-        
-        select * where { 
-            ?capital rdf:type ex:Capital;
-                  rdfs:label ?capitallabel.
-        } ORDER BY ?capital 
-                         """)
-
-    sparql.setReturnFormat(JSON)
-    results = sparql.query().convert()
-    for result in results["results"]["bindings"]:
-        pass
-
-    return result_list
-
-
-def get_country_landmarks(capital):
+def get_city_landmarks(capital):
     result_list = []
     capital = capital.replace(" ", "%20")
 
@@ -483,8 +493,8 @@ def get_country_landmarks(capital):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX ex: <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select * where { 
+
+            select * where {
                 ?landmark rdf:type ex:Landmark;
                        ex:fromCity :%s;
                        rdfs:label ?landmarklabel;
@@ -494,13 +504,16 @@ def get_country_landmarks(capital):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        landmark = result["landmark"]["value"]
+        landmarkLabel = result["landmarklabel"]["value"]
+        result_list.append((landmark, landmarkLabel))
 
     return result_list
 
 
-def get_country_theaters(capital):
+def get_city_theaters(capital):
     result_list = []
     capital = capital.replace(" ", "%20")
 
@@ -509,25 +522,28 @@ def get_country_theaters(capital):
             PREFIX ex: <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
             PREFIX ex2: <http://www.semanticweb.org/ontologies/2010/6/tourism.owl#>
-            
-            select * where { 
+
+            select * where {
                 ?theater rdf:type ex2:Theatre;
                        ex:fromCity :%s;
                        rdfs:label ?theaterlabel;
                        ex:hasCoordinates ?theatercoordinates.
             }
-            
+
             """ % capital)
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        theater = result["theater"]["value"]
+        theaterLabel = result["theaterlabel"]["value"]
+        result_list.append((theater, theaterLabel))
 
     return result_list
 
 
-def get_country_markets(capital):
+def get_city_markets(capital):
     result_list = []
     capital = capital.replace(" ", "%20")
 
@@ -535,8 +551,8 @@ def get_country_markets(capital):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX ex: <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select * where { 
+
+            select * where {
                 ?market rdf:type ex:Market;
                        ex:fromCity :%s;
                        rdfs:label ?marketlabel;
@@ -546,13 +562,16 @@ def get_country_markets(capital):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        market = result["market"]["value"]
+        marketLabel = result["marketlabel"]["value"]
+        result_list.append((market, marketLabel))
 
     return result_list
 
 
-def get_country_parks(capital):
+def get_city_parks(capital):
     result_list = []
     capital = capital.replace(" ", "%20")
 
@@ -560,8 +579,8 @@ def get_country_parks(capital):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX ex: <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select * where { 
+
+            select * where {
                 ?park rdf:type ex:Park;
                        ex:fromCity :%s;
                        rdfs:label ?parklabel;
@@ -571,13 +590,16 @@ def get_country_parks(capital):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        park = result["park"]["value"]
+        parkLabel = result["parklabel"]["value"]
+        result_list.append((park, parkLabel))
 
     return result_list
 
 
-def get_country_theme_parks(capital):
+def get_city_theme_parks(capital):
     result_list = []
     capital = capital.replace(" ", "%20")
 
@@ -585,8 +607,8 @@ def get_country_theme_parks(capital):
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
             PREFIX ex: <http://www.tourism.org/group6/>
             PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
-            
-            select * where { 
+
+            select * where {
                 ?themepark rdf:type ex:Theme_Park;
                        ex:fromCity :%s;
                        rdfs:label ?themeparklabel;
@@ -596,8 +618,11 @@ def get_country_theme_parks(capital):
 
     sparql.setReturnFormat(JSON)
     results = sparql.query().convert()
+
     for result in results["results"]["bindings"]:
-        pass
+        themepark = result["themepark"]["value"]
+        themeparkLabel = result["themeparklabel"]["value"]
+        result_list.append((themepark, themeparkLabel))
 
     return result_list
 

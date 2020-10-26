@@ -68,8 +68,6 @@ def get_regions(continent='all'):
 
 def get_countries(continent='all', region='all'):
     result_list = []
-    continent = continent.replace(" ", "%20")
-    region = region.replace(" ", "%20")
 
     if continent == 'all' and region == 'all':  # default aka neither region nor continent is selected
         sparql.setQuery("""
@@ -129,7 +127,6 @@ def get_countries(continent='all', region='all'):
 
 def get_capitals(country):  # could be changed to get cities
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -178,7 +175,6 @@ def get_country_coordinates(country):
 
 def get_capital_coordinates(capital):
     result_list = []
-    capital = capital.replace(" ", "%20")
 
     sparql.setQuery("""
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -205,7 +201,6 @@ def get_capital_coordinates(capital):
 ###COUTRY QUERIES
 def get_country_basic_info(country):
     result_list = {}
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
                        PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -217,6 +212,7 @@ def get_country_basic_info(country):
                                   ex:hasFlag ?flag;
                                   ex:hasCapital ?capital;
                                   ex:hasPopulation ?population.
+                            ?capital rdfs:label ?capitallabel.
                         }
 
                         """ % country)
@@ -227,44 +223,42 @@ def get_country_basic_info(country):
     for result in results["results"]["bindings"]:
         abstract = result["abstract"]["value"]
         flag = result["flag"]["value"]
-        capital = result["capital"]["value"].split('/')[-1]
+        capital = result["capital"]["value"]
+        capitallabel = result["capitallabel"]["value"]
         population = result["population"]["value"]
 
         result_list['Abstract'] = abstract
         result_list['Flag'] = flag
         result_list['Capital'] = capital
+        result_list['Capitallabel'] = capitallabel
         result_list['Population'] = population
 
     return result_list
 
 
-##TODO: does not work, please fix?
 def get_country_neighbors(country):
-    pass
-    # result_list = []
-    # country = country.replace(" ", "%20")
-    #
-    # sparql.setQuery("""
-    #                   PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
-    #                   PREFIX ex: <http://www.tourism.org/group6/>
-    #
-    #                   select * where {
-    #                      ex:%s ex:sharesBordersWith ?neighboringcountry.}
-    #                     """ % country)
-    #
-    # sparql.setReturnFormat(JSON)
-    # results = sparql.query().convert()
-    #
-    # for result in results["results"]["bindings"]:
-    #     neighbor = result["neighboringcountry"]["value"]
-    #     result_list.append(neighbor)
-    #
-    # return result_list
+    result_list = []
+
+    sparql.setQuery("""
+                      PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
+                      PREFIX ex: <http://www.tourism.org/group6/>
+
+                      select * where {
+                         ex:%s ex:sharesBordersWith ?neighboringcountry.}
+                        """ % country)
+
+    sparql.setReturnFormat(JSON)
+    results = sparql.query().convert()
+
+    for result in results["results"]["bindings"]:
+        neighbor = result["neighboringcountry"]["value"]
+        result_list.append(neighbor)
+
+    return result_list
 
 
 def get_country_languages(country):
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
                     PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -292,7 +286,6 @@ def get_country_languages(country):
 
 def get_country_currency(country):
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
                         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -322,7 +315,6 @@ def get_country_currency(country):
 
 def get_country_cities(country):
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
                         PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -350,7 +342,6 @@ def get_country_cities(country):
 
 def get_country_landmarks(country):
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -381,7 +372,6 @@ def get_country_landmarks(country):
 
 def get_country_national_dish(country):
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
                 PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -408,7 +398,6 @@ def get_country_national_dish(country):
 
 def get_country_national_animal_plant(country):
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -435,7 +424,6 @@ def get_country_national_animal_plant(country):
 
 def get_country_food(country):
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -464,7 +452,6 @@ def get_country_food(country):
 
 def get_country_resort_towns(country):
     result_list = []
-    country = country.replace(" ", "%20")
 
     sparql.setQuery("""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -485,7 +472,8 @@ def get_country_resort_towns(country):
     for result in results["results"]["bindings"]:
         resortTown = result["resorttown"]["value"]
         resortTowLabel = result["resorttownlabel"]["value"]
-        result_list.append((resortTown, resortTowLabel))
+        coordinates = result["resorttowncoordinates"]["value"]
+        result_list.append([resortTown, resortTowLabel, coordinates])
 
     return result_list
 
@@ -494,7 +482,6 @@ def get_country_resort_towns(country):
 
 def get_city_landmarks(capital):
     result_list = []
-    capital = capital.replace(" ", "%20")
 
     sparql.setQuery("""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -522,7 +509,6 @@ def get_city_landmarks(capital):
 
 def get_city_theaters(capital):
     result_list = []
-    capital = capital.replace(" ", "%20")
 
     sparql.setQuery("""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -552,7 +538,6 @@ def get_city_theaters(capital):
 
 def get_city_markets(capital):
     result_list = []
-    capital = capital.replace(" ", "%20")
 
     sparql.setQuery("""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -580,7 +565,6 @@ def get_city_markets(capital):
 
 def get_city_parks(capital):
     result_list = []
-    capital = capital.replace(" ", "%20")
 
     sparql.setQuery("""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>
@@ -608,7 +592,6 @@ def get_city_parks(capital):
 
 def get_city_theme_parks(capital):
     result_list = []
-    capital = capital.replace(" ", "%20")
 
     sparql.setQuery("""
             PREFIX rdf: <http://www.w3.org/1999/02/22-rdf-syntax-ns#>

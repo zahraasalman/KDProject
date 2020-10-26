@@ -2,8 +2,8 @@ import streamlit as st
 import queries as Q
 
 
-def show(country=None):
-    st.title(country)
+def show(country=None, countrylabel=None):
+    st.title(countrylabel)
 
     ### QUERIES ###
     countryInfo = Q.get_country_basic_info(country)
@@ -29,8 +29,12 @@ def show(country=None):
         if countryInfo:
             for key, value in countryInfo.items():
                 if not key == 'Abstract':
-                    newValue = value.replace("%20", " ")
-                    st.markdown('**' + key + ":** " + newValue)
+                    if key == 'Capital':
+                        pass
+                    elif key == 'Capitallabel':
+                        st.markdown('**Capital: **' + value)
+                    else:
+                        st.markdown('**' + key + ":** " + value)
 
         if languages:
             result = ""
@@ -54,32 +58,32 @@ def show(country=None):
             result = ""
 
             for f in food[:-1]:
-                result += f[0][1] + ", "
+                result += f[1] + ", "
             else:
                 if result != '':
-                    result += ". "
+                    result += f[1] + ". "
             if result != '':
                 st.markdown('**Food:** ' + result)
 
         if resortTowns:
+            print(resortTowns)
             result = ""
 
             for town in resortTowns[:-1]:
-                result += town[0][1] + ", "
+                result += town[1] + ", "
             else:
-                result += town + ". "
+                result += town[1] + ". "
             if result != '':
                 st.markdown('**Resort Towns:** ' + result)
-
 
         if landmarks:
             result = ""
 
             for landmark in landmarks[:-1]:
                 print(landmark)
-                result += landmark[0][1] + ", "
+                result += landmark[1] + ", "
             else:
-                result += landmark[0][1] + ". "
+                result += landmark[1] + ". "
             if result != '':
                 st.markdown('**Landmarks:** ' + result)
 
@@ -92,8 +96,6 @@ def show(country=None):
                 result += neighbour + ". "
             if result != '':
                 st.markdown('**Neighbouring countries (recommended to check):** *' + result)
-                st.markdown('* In the full implemented version, these will be hyperlinks to go to the country pages'
-                            + result)
 
         if cities:
             result = ""
@@ -103,4 +105,6 @@ def show(country=None):
             else:
                 result += city + ". "
             if result != '':
-                st.markdown('**Cities:** ' + result)
+                st.markdown('**Cities:** * ' + result)
+
+        st.markdown('   *In the full implemented version, these will be hyperlinks to go to the country/city pages')

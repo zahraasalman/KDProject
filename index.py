@@ -159,7 +159,8 @@ def options():
         return_list["country"] = option_country
         index = find_index(option_country, countries['label'])
         country = countries['country'][index]
-        options.country = country  # individual or label?
+        options.country = country
+        options.countrylabel = option_country
     else:
         st.markdown("<font color='red' face='monospace' size='+1'><b>"
                     "No results found..."
@@ -257,4 +258,4 @@ if st.button('Find Places'):
     if hasattr(options, 'capital'):
         PAGES['cityDetail'].show(city=options.capital)
     else:
-        PAGES['countryDetail'].show(country=options.country)
+        PAGES['countryDetail'].show(country=options.country, countrylabel=options.countrylabel)

@@ -35,4 +35,4 @@ This application is created to give the user information about any country or ca
 <p>The user is able to filter by capital, this allows the user to instantly select the capital of their selected city.</p>
 
 <h5>The map</h5>
-<p>The map displays the location the user has selected, however due to technical limitations of the framework this map is not interactable and purely acts as mean to convey the location to the user and or allow the user to see the area of their desired location.</p>
+<p>The map displays the location the user has selected, however, due to technical limitations of the framework this map is not interactable and purely acts as a mean to convey the location to the user and or allow the user to see the area of their desired location.</p>

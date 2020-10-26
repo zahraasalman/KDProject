@@ -212,6 +212,10 @@ def getMap(coordinates):  ### touples array! [(float, float), (float, float)]
 _max_width_()
 background()
 st.title("WELCOME TO TOURISTIQ")
+if Q.endpoint is None:
+    st.markdown("<font color='red' face='monospace' size='+1'><b>"
+                "No endpoint inserted, check the readme file for instructions!"
+                "</b></font>", unsafe_allow_html=True)
 """
 This app is made to help you get your information before you travel to your touisty destination blah blah idc. \n
 This is multi-line and it's awesome

@@ -216,8 +216,9 @@ if Q.endpoint is None:
                 "No endpoint inserted, check the readme file for instructions!"
                 "</b></font>", unsafe_allow_html=True)
 """
-This app is made to help you get your information before you travel to your touisty destination blah blah idc. \n
-This is multi-line and it's awesome
+Love to travel? Explore your options and find you next destination!
+Or are you already on your journey? Then learn more about the place you’re at and the place you’re going to next!
+Just click the country or city you want to find out more about, you can filter by continent and/or region.
 """
 col1, col2 = st.beta_columns([2, 3])
 

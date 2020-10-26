@@ -38,73 +38,65 @@ def show(country=None, countrylabel=None):
 
         if languages:
             result = ""
-            for language in languages[:-1]:
-                result += language + ", "
-            else:
-                result += language + ". "
+            for language in languages:
+                if not any(char.isdigit() for char in language):
+                    result += language + ", "
             if result != '':
-                st.markdown('**Languages:** ' + result)
+                st.markdown('**Languages:** ' + result[:-2] + '. ')
 
-        if currency:
+        if currency and not any(char.isdigit() for char in currency[0][1]):
             st.markdown('**Currency:** ' + currency[0][1])
 
-        if nationalDish:
+        if nationalDish and not any(char.isdigit() for char in nationalDish[0][1]):
             st.markdown('**National Dish:** ' + nationalDish[0][1])
 
-        if nationalAnimalPlant:
+        if nationalAnimalPlant and not any(char.isdigit() for char in nationalAnimalPlant):
             st.markdown('**National animal or plant:** ' + nationalAnimalPlant)
 
         if food:
             result = ""
 
-            for f in food[:-1]:
-                result += f[1] + ", "
-            else:
-                if result != '':
-                    result += f[1] + ". "
+            for f in food:
+                if any(char.isdigit() for char in f):
+                    result += f[1] + ", "
             if result != '':
-                st.markdown('**Food:** ' + result)
+                st.markdown('**Food:** ' + result[:-2] + '. ')
 
         if resortTowns:
-            print(resortTowns)
             result = ""
 
-            for town in resortTowns[:-1]:
-                result += town[1] + ", "
-            else:
-                result += town[1] + ". "
+            for town in resortTowns:
+                if not any(char.isdigit() for char in f):
+                    result += town[1] + ", "
             if result != '':
-                st.markdown('**Resort Towns:** ' + result)
+                st.markdown('**Resort Towns:** ' + result[:-2] + '. ')
 
         if landmarks:
             result = ""
 
-            for landmark in landmarks[:-1]:
-                print(landmark)
-                result += landmark[1] + ", "
-            else:
-                result += landmark[1] + ". "
+            for landmark in landmarks:
+                if not any(char.isdigit() for char in landmark):
+                    result += landmark[1] + ", "
             if result != '':
-                st.markdown('**Landmarks:** ' + result)
+                st.markdown('**Landmarks:** ' + result[:-2] + '. ')
 
         if neighbours:
             result = ""
 
-            for neighbour in neighbours[:-1]:
-                result += neighbour + ", "
-            else:
-                result += neighbour + ". "
+            for neighbour in neighbours:
+                if not any(char.isdigit() for char in neighbour):
+                    result += neighbour + ", "
             if result != '':
-                st.markdown('**Neighbouring countries (recommended to check):** *' + result)
+                st.markdown('**Neighbouring countries (recommended to check):** *' + result[:-2] + ". ")
 
         if cities:
             result = ""
 
-            for city in cities[:-1]:
-                result += city + ", "
-            else:
-                result += city + ". "
+            for city in cities:
+                if not any(char.isdigit() for char in city):
+                    result += city + ", "
             if result != '':
-                st.markdown('**Cities:** * ' + result)
+                st.markdown('**Cities:** * ' + result[:-2] + '. ')
 
-        st.markdown('   *In the full implemented version, these will be hyperlinks to go to the country/city pages')
+        if cities or neighbours:
+            st.markdown('   *In the full implemented version, these will be hyperlinks to go to the country/city pages')

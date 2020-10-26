@@ -2,61 +2,61 @@ import streamlit as st
 import queries as Q
 
 
-def show(city=None):
-    cityName = city.replace("%20", " ")
+def show(city=None, cityName=None):
     st.title(cityName)
 
     ### QUERIES ###
+    cityInfo = Q.get_city_basic_info(city)
     landmarks = Q.get_city_landmarks(city)
     theaters = Q.get_city_theaters(city)
-    markets = Q.get_city_markets(city)
+    # markets = Q.get_city_markets(city)
     themeParks = Q.get_city_theme_parks(city)
     parks = Q.get_city_parks(city)
 
     # print(landmarks, theaters, markets, themeParks, parks)
 
-    if landmarks:
-        result = ""
-        for landmark in landmarks[-1]:
-            print(landmark)
-            result += landmark[0][1] + ", "
-        else:
-            result += ". "
+    col1, col2 = st.beta_columns([3, 2])
+    with col1:
+        if cityInfo:
+            st.markdown(cityInfo['Abstract'])
 
-        st.markdown('**Landmarks:** ' + result)
+    with col2:
+        if landmarks:
+            result = ""
+            for landmark in landmarks:
+                result += landmark + ", "
 
-    if theaters:
-        result = ""
-        for theater in theaters[-1]:
-            result += theater + ", "
-        else:
-            result += theater + ". "
+            st.markdown('**Landmarks:** ' + result[:-2] + ". ")
 
-        st.markdown('**Theaters:** ' + result)
+        if theaters:
+            result = ""
+            for theater in theaters:
+                result += theater + ", "
 
-    if markets:
-        result = ""
-        for market in markets[-1]:
-            result += market + ", "
-        else:
-            result += market + ". "
+            st.markdown('**Theaters:** ' + result[:-2] + ". ")
 
-        st.markdown('**Markets:** ' + result)
+        # query doesn't work
+        # if markets:
+        #     result = ""
+        #     for market in markets:
+        #         print()
+        #         print(market)
+        #         result += market + ", "
+        #
+        #     st.markdown('**Markets:** ' + result[:-2] + ". ")
 
-    if parks:
-        result = ""
-        for park in parks[-1]:
-            result += park + ", "
-        else:
-            result += park + ". "
+        if parks:
+            result = ""
+            for park in parks:
+                print()
+                print(park)
+                result += park + ", "
 
-        st.markdown('**Parks:** ' + result)
+            st.markdown('**Parks:** ' + result[:-2] + ". ")
 
-    if themeParks:
-        result = ""
-        for themePark in themeParks[-1]:
-            result += themePark + ", "
-        else:
-            result += themePark + ". "
+        if themeParks:
+            result = ""
+            for themePark in themeParks:
+                result += themePark + ", "
 
-        st.markdown('**Theme Parks:** ' + result)
+            st.markdown('**Theme Parks:** ' + result[:-2] + ". ")

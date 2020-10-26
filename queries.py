@@ -3,7 +3,7 @@ import SPARQLWrapper
 from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 
-sparql = SPARQLWrapper("http://192.168.1.103:7200/repositories/FinalProject")
+sparql = SPARQLWrapper("http://192.168.178.122:7200/repositories/TestKD3")
 
 
 def get_continents():
@@ -185,7 +185,7 @@ def get_capital_coordinates(capital):
                     PREFIX : <http://www.tourism.org/group6/>
                     PREFIX rdfs: <http://www.w3.org/2000/01/rdf-schema#>
                     select * where { 
-                            :%s rdf:type :Country;
+                            :%s rdf:type :Capital;
                                 :hasLatitude ?lat;
                                 :hasLongitude ?long.
                     } 

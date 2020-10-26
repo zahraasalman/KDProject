@@ -19,76 +19,82 @@ def show(country=None):
     neighbours = Q.get_country_neighbors(country)
     cities = Q.get_country_cities(country)
 
-    st.markdown('** General Info **')
+    col1, col2 = st.beta_columns([3, 2])
 
-    if countryInfo:
-        for key, value in countryInfo.items():
-            st.markdown(key + ": " + value)
+    with col1:
+        if countryInfo:
+            st.markdown(countryInfo['Abstract'])
 
-    if languages:
-        result = ""
-        for language in languages[:-1]:
-            result += language + ", "
-        else:
-            result += language + ". "
+    with col2:
+        if countryInfo:
+            for key, value in countryInfo.items():
+                if not key == 'Abstract':
+                    st.markdown('**' + key + ":** " + value)
 
-        st.markdown('Languages: ' + result)
+        if languages:
+            result = ""
+            for language in languages[:-1]:
+                result += language + ", "
+            else:
+                result += language + ". "
 
-    if currency:
-        st.markdown('Currency: ' + currency)
+            st.markdown('**Languages:** ' + result)
 
-    if nationalDish:
-        st.markdown('National Dish: ' + nationalDish)
+        if currency:
+            st.markdown('**Currency:** ' + currency)
 
-    if nationalAnimalPlant:
-        st.markdown('National animal or plant: ' + nationalAnimalPlant)
+        if nationalDish:
+            st.markdown('**National Dish:** ' + nationalDish)
 
-    if food:
-        result = ""
+        if nationalAnimalPlant:
+            st.markdown('**National animal or plant:** ' + nationalAnimalPlant)
 
-        for f in food[:-1]:
-            result += f + ", "
-        else:
-            result += f + ". "
+        if food:
+            result = ""
 
-        st.markdown('Food: ' + result)
+            for f in food[:-1]:
+                result += f + ", "
+            else:
+                result += f + ". "
 
-    if resortTowns:
-        result = ""
+            st.markdown('**Food:** ' + result)
 
-        for town in resortTowns[:-1]:
-            result += town + ", "
-        else:
-            result += town + ". "
+        if resortTowns:
+            result = ""
 
-        st.markdown('Resort Towns: ' + result)
+            for town in resortTowns[:-1]:
+                result += town + ", "
+            else:
+                result += town + ". "
 
-    if landmarks:
-        result = ""
+            st.markdown('**Resort Towns:** ' + result)
 
-        for landmark in landmarks[:-1]:
-            result += landmark + ", "
-        else:
-            result += landmark + ". "
+        if landmarks:
+            result = ""
 
-        st.markdown('Landmarks: ' + result)
+            for landmark in landmarks[:-1]:
+                result += landmark + ", "
+            else:
+                result += landmark + ". "
 
-    if cities:
-        result = ""
+            st.markdown('**Landmarks:** ' + result)
 
-        for city in cities[:-1]:
-            result += city + ", "
-        else:
-            result += city + ". "
+        if cities:
+            result = ""
 
-        st.markdown('Cities: ' + result)
+            for city in cities[:-1]:
+                result += city + ", "
+            else:
+                result += city + ". "
 
-    if neighbours:
-        result = ""
+            st.markdown('**Cities:** ' + result)
 
-        for neighbour in neighbours[:-1]:
-            result += neighbour + ", "
-        else:
-            result += neighbour + ". "
+        if neighbours:
+            result = ""
 
-        st.markdown('Neighbouring countries: ' + result)
+            for neighbour in neighbours[:-1]:
+                result += neighbour + ", "
+            else:
+                result += neighbour + ". "
+
+            st.markdown('**Neighbouring countries:** ' + result)

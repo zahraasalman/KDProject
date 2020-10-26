@@ -16,7 +16,6 @@ This application is created to give the user information about any country or ca
 <li>For example: <code>endpoint = "http://xxx.xxx.xxx.xxx:xxxx/repositories/YourRepositoryName"</code></li>
 </li>
 </ul>
-<ul>
 <li>To run the application, in the location where the application files are located, execute the following command: </li>
 <code>streamlit run index.py </code>
 </ul>

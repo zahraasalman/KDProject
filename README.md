@@ -12,7 +12,7 @@ This application is created to give the user information about any country or ca
 </ul>
 <li>Before you can run the program, you need to insert a valid endpoint url at line 8 of queries.py.
 <ul>
-<li><code>endpoint = None</code> Replace <em>None</em> by your own endpoint url between quatation marks. </li>
+<li><code>endpoint = None</code> Replace <em>None</em> by your own endpoint url between quotation marks.</li>
 <li>For example: <code>endpoint = "http://xxx.xxx.xxx.xxx:xxxx/repositories/YourRepositoryName"</code></li>
 </li>
 </ul>

@@ -12,34 +12,49 @@ def show(city=None):
     themeParks = Q.get_city_theme_parks(city)
     parks = Q.get_city_parks(city)
 
-    st.markdown('** Info **')
+    # print(landmarks, theaters, markets, themeParks, parks)
 
     if landmarks:
-        st.write(''' Landmarks:  ''')
+        result = ""
+        for landmark in landmarks[-1]:
+            result += landmark + ", "
+        else:
+            result += landmark + ". "
 
-        for landmark in landmarks:
-            st.write(landmark + ", ")
+        st.markdown('**Landmarks:** ' + result)
 
     if theaters:
-        st.write(''' Theaters:  ''')
+        result = ""
+        for theater in theaters[-1]:
+            result += theater + ", "
+        else:
+            result += theater + ". "
 
-        for theater in theaters:
-            st.write(theaters + ", ")
+        st.markdown('**Theaters:** ' + result)
 
     if markets:
-        st.write(''' Markets:  ''')
+        result = ""
+        for market in markets[-1]:
+            result += market + ", "
+        else:
+            result += market + ". "
 
-        for market in markets:
-            st.write(markets + ", ")
+        st.markdown('**Markets:** ' + result)
 
     if parks:
-        st.write(''' Parks:  ''')
+        result = ""
+        for park in parks[-1]:
+            result += park + ", "
+        else:
+            result += park + ". "
 
-        for park in parks:
-            st.write(park + ", ")
+        st.markdown('**Parks:** ' + result)
 
     if themeParks:
-        st.write(''' Theme Parks:  ''')
+        result = ""
+        for themePark in themeParks[-1]:
+            result += themePark + ", "
+        else:
+            result += themePark + ". "
 
-        for themePark in themeParks:
-            st.write(themePark + ", ")
+        st.markdown('**Theme Parks:** ' + result)

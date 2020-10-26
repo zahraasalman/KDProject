@@ -14,6 +14,8 @@ This application is created to give the user information about any country or ca
 <ul>
 <li><code>endpoint = None</code> Replace <em>None</em> by your own endpoint url between quatation marks. </li>
 <li>For example: <code>endpoint = "http://xxx.xxx.xxx.xxx:xxxx/repositories/YourRepositoryName"</code></li>
+</ul>
+<ul>
 <li>To run the application, in the location where the application files are located, execute the following command: </li>
 <code>streamlit run index.py </code>
 </ul>

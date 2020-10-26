@@ -6,7 +6,7 @@ import streamlit as st
 
 
 ##################### INSERT THE ENDPOINT LINK HERE AS A STRING REPLACING THE CURRENT ONE #############################
-endpoint = None
+endpoint = "http://192.168.1.103:7200/repositories/FinalProject"
 #######################################################################################################################
 sparql = SPARQLWrapper(endpoint)
 

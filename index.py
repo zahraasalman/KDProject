@@ -186,7 +186,6 @@ def options():
                 index = find_index(option_capital, capitals['label'])
                 capital = capitals['capital'][index]
                 options.capital = capital
-                "eh " + options.capital
                 options.capitallabel = option_capital
             else:
                 st.markdown("<font color='red' face='monospace' size='+1'><b>"

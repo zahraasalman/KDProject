@@ -4,10 +4,10 @@ from rdflib import Graph, RDF, Namespace, Literal, URIRef
 from SPARQLWrapper import SPARQLWrapper, JSON
 import streamlit as st
 
-
 ##################### INSERT THE ENDPOINT LINK HERE AS A STRING REPLACING THE CURRENT ONE #############################
 endpoint = None
 #######################################################################################################################
+
 sparql = SPARQLWrapper(endpoint)
 
 def get_continents():
